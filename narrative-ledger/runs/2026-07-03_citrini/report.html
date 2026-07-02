@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VTR — wait · narrative-ledger</title>
+<style>
+  :root{
+    --paper:#f6f3ec;--paper-2:#fbf9f4;--ink:#1f1b16;--ink-soft:#3a342c;--muted:#6f665a;--faint:#8b8275;
+    --rule:#ddd5c6;--rule-strong:#c9bfac;--accent:#8c2f24;--accent-2:#2f4858;
+    --pass:#3f6b4f;--caution:#9a6b1f;--fail:#9a3b2f;--chip:#efe9dd;
+    --serif:Georgia,"Iowan Old Style","Palatino Linotype","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px 90px}
+  header{border-bottom:2px solid var(--ink);padding:38px 0 18px;margin-bottom:26px}
+  .kicker{font-family:var(--sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px}
+  h1{font-size:30px;line-height:1.12;margin:0 0 10px;letter-spacing:-.01em}
+  .meta{font-family:var(--sans);font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 20px;border-top:1px solid var(--rule);padding-top:12px;margin-top:14px}
+  .meta b{color:var(--ink-soft)}
+  h2{font-size:21px;margin:38px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--rule-strong)}
+  .mono{font-family:var(--mono);font-size:12.5px;background:#ece6d9;padding:1px 5px;border-radius:4px}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(140,47,36,.32)}
+  /* decision strip */
+  .strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--rule-strong);border:1.5px solid var(--ink);border-radius:10px;overflow:hidden;margin:20px 0}
+  .cell{background:var(--paper-2);padding:12px 14px}
+  .cell .k{font-family:var(--sans);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .cell .v{font-size:20px;font-weight:700;margin-top:3px}
+  .v-size{color:var(--pass)} .v-starter{color:var(--caution)} .v-wait{color:var(--accent-2)} .v-pass{color:var(--fail)}
+  table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13.5px;line-height:1.45;margin:14px 0}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{background:var(--chip);font-size:11px;letter-spacing:.05em;text-transform:uppercase;border-bottom:1.5px solid var(--rule-strong)}
+  .verdict-supports{color:var(--pass);font-weight:700}
+  .verdict-refutes{color:var(--fail);font-weight:700}
+  .verdict-insufficient{color:var(--caution);font-weight:700}
+  blockquote{margin:4px 0 0;padding:2px 0 2px 10px;border-left:3px solid var(--rule-strong);color:var(--ink-soft);font-size:13px;font-style:italic}
+  .ks li{margin-bottom:8px}
+  .box{border-radius:10px;padding:14px 18px;margin:18px 0;font-size:15px;background:var(--paper-2);border:1px solid var(--rule);border-left:4px solid var(--accent-2)}
+  .foot{font-family:var(--sans);font-size:12px;color:var(--muted);border-top:2px solid var(--ink);margin-top:56px;padding-top:14px}
+  .pill{display:inline-block;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.05em;padding:1px 8px;border-radius:20px;text-transform:uppercase;background:var(--chip);color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">narrative-ledger · run 2026-07-03_citrini</div>
+    <h1>WAIT · VTR · long · 10 sess · conv 0.00</h1>
+    <div class="meta">
+      <span><b>Source</b> Citrini Research (unproven)</span>
+      <span><b>Published</b> 24 Jun 2026</span>
+      <span><b>Run</b> 02 Jul 2026</span>
+      <span><b>Artifact</b> <a href="https://www.citriniresearch.com/p/small-themes-june-2026">https://www.citriniresearch.com/p/small-themes-june-2026</a></span>
+    </div>
+  </header>
+
+  <!-- THE DECISION — readable in 60 seconds -->
+  <div class="strip">
+    <div class="cell"><div class="k">Verdict</div><div class="v v-wait">WAIT</div></div>
+    <div class="cell"><div class="k">Expression</div><div class="v">long VTR</div></div>
+    <div class="cell"><div class="k">Conviction</div><div class="v">0.00</div></div>
+    <div class="cell"><div class="k">Size (of vol budget)</div><div class="v">0.0%</div></div>
+    <div class="cell"><div class="k">Verified</div><div class="v">2/2</div></div>
+    <div class="cell"><div class="k">Expectations gap</div><div class="v">0.50</div></div>
+    <div class="cell"><div class="k">Stage</div><div class="v">exhausted</div></div>
+    <div class="cell"><div class="k">Horizon</div><div class="v">10 sess</div></div>
+  </div>
+
+  <h2>Kill-switches — pre-registered</h2>
+  <ul class="ks">
+    
+    <li><span class="mono">2026-07-31</span> — Re-entry trigger: VTR closes within 3% of its 50DMA (~$85.3 at run date) with RSI14 &lt; 65 - re-run the ledger for a fresh entry decision</li>
+    
+    <li><span class="mono">2026-07-30</span> — Thesis damage: Q2&#39;26 earnings (due 2026-07-29) show SHOP same-store occupancy gain &lt; 200bps YoY, or 2026 normalized-FFO guidance midpoint cut below $3.86 - downgrade to pass</li>
+    
+    <li><span class="mono">2026-10-31</span> — Thesis broken: next NIC MAP quarterly release shows sector occupancy flat/down QoQ, or YoY inventory growth &gt;= 1.0% (supply response starting) - downgrade to pass</li>
+    
+  </ul>
+
+  <h2>What's priced in</h2>
+  <p><b>The price already requires:</b> Deterministic reverse-DCF (cli imply, verbatim): &#39;implied FCF CAGR +10.0% (price=89.06, shares=486169723.0, net_debt=0.0, fcf=1874184282.0, exit_multiple=23.1, years=5, discount=0.1)&#39;. Because the exit multiple used is today&#39;s own 23.1x P/normalized-FFO, this says: at an UNCHANGED multiple the price only earns its 10% discount rate if FFO compounds ~10%/yr for five years - matching 2026&#39;s guided +9% (an exceptionally strong year) indefinitely, far above mid-single-digit REIT base rates. Any multiple compression raises the required growth further. The verified demand story is real, but at 23x FFO, near 52-week highs, RSI14 78.2 and +16.4% above the 200DMA (technicals.json, 2026-07-02), with 11 sell-side target raises since the Q1 print, little of it is left on the table at this entry.</p>
+  <p><b>Variant view:</b> What still looks under-modeled is DURATION, not direction: 19 consecutive quarters of occupancy gains with construction at 2012 lows and record-low 0.4% inventory growth implies a multi-year pricing-power runway that one-year guidance frames understate. But duration variant + full multiple + extended tape = a timing problem, not an entry. Our variant on the source&#39;s (public) framing: right theme, wrong week - wait for the reversion trigger.</p>
+  
+  <table>
+    <thead><tr><th>Input</th><th>Value</th><th>Evidence</th></tr></thead>
+    <tbody>
+    
+      <tr>
+        <td>USD share price (stockanalysis.com quote dated 26 Jun 2026; yfinance close 2026-07-02 was $92.21 per technicals.json - higher price only worsens the expectations math)</td>
+        <td class="mono">89.06</td>
+        <td><a href="https://stockanalysis.com/stocks/vtr/">stockanalysis.com</a> 
+          <blockquote>&ldquo;89.06&rdquo;</blockquote></td>
+      </tr>
+    
+      <tr>
+        <td>shares outstanding (10-Q cover, 2026-04-24)</td>
+        <td class="mono">486169723.0</td>
+        <td><a href="https://data.sec.gov/api/xbrl/companyconcept/CIK0000740260/dei/EntityCommonStockSharesOutstanding.json">data.sec.gov</a> <span class="pill">primary</span>
+          <blockquote>&ldquo;&#34;end&#34;:&#34;2026-04-24&#34;,&#34;val&#34;:486169723&rdquo;</blockquote></td>
+      </tr>
+    
+      <tr>
+        <td>USD/share 2026 normalized FFO guidance midpoint (raised range $3.82-$3.89)</td>
+        <td class="mono">3.855</td>
+        <td><a href="https://www.sec.gov/Archives/edgar/data/740260/000074026026000016/q12026earningsrelease.htm">www.sec.gov</a> <span class="pill">primary</span>
+          <blockquote>&ldquo;$3.82 - $3.89&rdquo;</blockquote></td>
+      </tr>
+    
+    </tbody>
+  </table>
+  
+
+  <h2>Claims &amp; evidence</h2>
+  <table>
+    <thead><tr><th style="width:12%">Claim</th><th style="width:34%">Restatement</th><th style="width:12%">Verdict</th><th>Evidence</th></tr></thead>
+    <tbody>
+    
+      <tr>
+        <td><span class="mono">c1</span><br><span class="pill">factual</span> <span class="pill" style="background:#f1ddd8;color:var(--accent)">load-bearing</span></td>
+        <td>US senior-housing demand is outrunning supply: occupancy has risen for many consecutive quarters while new construction sits at multi-year lows, so the imbalance should persist. NOTE: the post is paywalled; only the theme sentence is public, so this restatement fills in the standard form of the argument.<blockquote>&ldquo;Boomers checking into senior housing.&rdquo;</blockquote></td>
+        <td class="verdict-supports">supports</td>
+        <td>
+          
+          <div><a href="https://www.nic.org/news-press/senior-living-occupancy-grows-amid-construction-slowdown-limiting-options-for-older-adults/">www.nic.org</a> <span class="pill">primary</span>
+          <blockquote>&ldquo;Senior housing occupancy gained 0.4 percentage points to 89.5% in the first quarter of 2026, from 89.1% in the last quarter of 2025, according to the National Investment Center for Seniors Housing &amp; Care (NIC) using newly released data from NIC MAP. This is the 19th consecutive quarter of increasing occupancy rates.&rdquo;</blockquote></div>
+          
+          <div><a href="https://www.nic.org/news-press/senior-living-occupancy-grows-amid-construction-slowdown-limiting-options-for-older-adults/">www.nic.org</a> <span class="pill">primary</span>
+          <blockquote>&ldquo;At the same time, new units under construction fell to their lowest level since 2012, and year-over-year inventory growth hit a record low of 0.4% in the first quarter of 2026, suggesting new supply is unlikely to accelerate in the near term.&rdquo;</blockquote></div>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td><span class="mono">c2</span><br><span class="pill">valuation</span> <span class="pill" style="background:#f1ddd8;color:var(--accent)">load-bearing</span></td>
+        <td>The theme has a currently-delivering listed expression: Ventas (VTR), this run&#39;s chosen vehicle (EXPRESSION CHOICE IS OURS, not the source&#39;s - their picks are behind the paywall), is printing double-digit SHOP NOI growth with occupancy gains and raised full-year guidance.<blockquote>&ldquo;interesting, below the radar narratives in less popular sectors that can surprise&rdquo;</blockquote></td>
+        <td class="verdict-supports">supports</td>
+        <td>
+          
+          <div><a href="https://www.sec.gov/Archives/edgar/data/740260/000074026026000016/q12026earningsrelease.htm">www.sec.gov</a> <span class="pill">primary</span>
+          <blockquote>&ldquo;SHOP Same-Store Cash NOI increased more than 15% year-over-year, led by Same-Store Cash Operating Revenue growth of nearly 9%&rdquo;</blockquote></div>
+          
+          <div><a href="https://www.sec.gov/Archives/edgar/data/740260/000074026026000016/q12026earningsrelease.htm">www.sec.gov</a> <span class="pill">primary</span>
+          <blockquote>&ldquo;Fueled by our strong start to the year in SHOP and investments, we are increasing our full year guidance.&rdquo;</blockquote></div>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td><span class="mono">c3</span><br><span class="pill">catalyst</span></td>
+        <td>The demand wave has visible near-term markers: NIC projects sector occupancy crossing 90% before end-2026, and the first boomers turn 80 in 2026.<blockquote>&ldquo;Boomers checking into senior housing.&rdquo;</blockquote></td>
+        <td class="verdict-supports">supports</td>
+        <td>
+          
+          <div><a href="https://www.nic.org/news-press/senior-living-occupancy-grows-amid-construction-slowdown-limiting-options-for-older-adults/">www.nic.org</a> <span class="pill">primary</span>
+          <blockquote>&ldquo;At the current pace of development and demand, NIC analysts believe senior housing occupancy is on track to surpass 90% occupancy well before the end of the year, further tightening availability across many markets.&rdquo;</blockquote></div>
+          
+          <div><a href="https://www.sec.gov/Archives/edgar/data/740260/000074026026000016/q12026earningsrelease.htm">www.sec.gov</a> <span class="pill">primary</span>
+          <blockquote>&ldquo;As the nearly 70 million Baby Boomers begin turning 80 in 2026, we expect durable demand for our attractive senior housing communities located in favorable markets to increase&rdquo;</blockquote></div>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td><span class="mono">c4</span><br><span class="pill">expression</span></td>
+        <td>Capital rotation out of crowded AI into under-owned themes is imminent enough to trade. No primary source can verify positioning/attention claims; flagged insufficient rather than assumed.<blockquote>&ldquo;The AI trade is - at a minimum - crowded, even where it is right. We think the risk of &#34;AI exhaustion&#34; is high and it&#39;s probable that we will see some degree of rotation into things that people have seemingly stopped caring about.&rdquo;</blockquote></td>
+        <td class="verdict-insufficient">insufficient</td>
+        <td>
+          
+        </td>
+      </tr>
+    
+    </tbody>
+  </table>
+
+  
+
+  <h2>Source track record (computed, not asserted)</h2>
+  <table>
+    <thead><tr><th>Matured calls</th><th>Hit rate</th><th>Wilson 95% CI</th><th>Avg excess</th><th>Weight</th><th>Status</th></tr></thead>
+    <tbody><tr>
+      <td>0</td>
+      <td>0%</td>
+      <td>[0.00, 1.00]</td>
+      <td>+0.00%</td>
+      <td>0.50</td>
+      <td>unproven</td>
+    </tr></tbody>
+  </table>
+
+  <div class="foot">
+    <p>Generated 02 Jul 2026 16:59 UTC by narrative-ledger. Payload schema 1.0.
+    Conviction = source weight × verification rate × expectations gap × stage; computed in code on cited inputs — the agent never runs the math.
+    Research process, not investment advice.</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0",
+  "run_id": "2026-07-03_citrini",
+  "created_at": "2026-07-02T16:51:55.409646Z",
+  "source": {
+    "id": "citrini",
+    "name": "Citrini Research",
+    "venue": "https://www.citriniresearch.com/",
+    "artifact_url": "https://www.citriniresearch.com/p/small-themes-june-2026",
+    "published_at": "2026-06-24T13:09:19Z",
+    "track_record": {
+      "n_calls": 0,
+      "hit_rate": 0.0,
+      "avg_excess": 0.0,
+      "ci_low": 0.0,
+      "ci_high": 1.0,
+      "source_weight": 0.5,
+      "status": "unproven"
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "type": "factual",
+      "author_quote": "Boomers checking into senior housing.",
+      "restatement": "US senior-housing demand is outrunning supply: occupancy has risen for many consecutive quarters while new construction sits at multi-year lows, so the imbalance should persist. NOTE: the post is paywalled; only the theme sentence is public, so this restatement fills in the standard form of the argument.",
+      "load_bearing": true,
+      "verdict": "supports",
+      "evidence": [
+        {
+          "url": "https://www.nic.org/news-press/senior-living-occupancy-grows-amid-construction-slowdown-limiting-options-for-older-adults/",
+          "quote": "Senior housing occupancy gained 0.4 percentage points to 89.5% in the first quarter of 2026, from 89.1% in the last quarter of 2025, according to the National Investment Center for Seniors Housing & Care (NIC) using newly released data from NIC MAP. This is the 19th consecutive quarter of increasing occupancy rates.",
+          "retrieved_at": "2026-07-02T16:46:00Z",
+          "is_primary": true
+        },
+        {
+          "url": "https://www.nic.org/news-press/senior-living-occupancy-grows-amid-construction-slowdown-limiting-options-for-older-adults/",
+          "quote": "At the same time, new units under construction fell to their lowest level since 2012, and year-over-year inventory growth hit a record low of 0.4% in the first quarter of 2026, suggesting new supply is unlikely to accelerate in the near term.",
+          "retrieved_at": "2026-07-02T16:46:00Z",
+          "is_primary": true
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "type": "valuation",
+      "author_quote": "interesting, below the radar narratives in less popular sectors that can surprise",
+      "restatement": "The theme has a currently-delivering listed expression: Ventas (VTR), this run's chosen vehicle (EXPRESSION CHOICE IS OURS, not the source's - their picks are behind the paywall), is printing double-digit SHOP NOI growth with occupancy gains and raised full-year guidance.",
+      "load_bearing": true,
+      "verdict": "supports",
+      "evidence": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/740260/000074026026000016/q12026earningsrelease.htm",
+          "quote": "SHOP Same-Store Cash NOI increased more than 15% year-over-year, led by Same-Store Cash Operating Revenue growth of nearly 9%",
+          "retrieved_at": "2026-07-02T16:53:00Z",
+          "is_primary": true
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/740260/000074026026000016/q12026earningsrelease.htm",
+          "quote": "Fueled by our strong start to the year in SHOP and investments, we are increasing our full year guidance.",
+          "retrieved_at": "2026-07-02T16:53:00Z",
+          "is_primary": true
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "type": "catalyst",
+      "author_quote": "Boomers checking into senior housing.",
+      "restatement": "The demand wave has visible near-term markers: NIC projects sector occupancy crossing 90% before end-2026, and the first boomers turn 80 in 2026.",
+      "load_bearing": false,
+      "verdict": "supports",
+      "evidence": [
+        {
+          "url": "https://www.nic.org/news-press/senior-living-occupancy-grows-amid-construction-slowdown-limiting-options-for-older-adults/",
+          "quote": "At the current pace of development and demand, NIC analysts believe senior housing occupancy is on track to surpass 90% occupancy well before the end of the year, further tightening availability across many markets.",
+          "retrieved_at": "2026-07-02T16:46:00Z",
+          "is_primary": true
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/740260/000074026026000016/q12026earningsrelease.htm",
+          "quote": "As the nearly 70 million Baby Boomers begin turning 80 in 2026, we expect durable demand for our attractive senior housing communities located in favorable markets to increase",
+          "retrieved_at": "2026-07-02T16:53:00Z",
+          "is_primary": true
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "type": "expression",
+      "author_quote": "The AI trade is - at a minimum - crowded, even where it is right. We think the risk of \"AI exhaustion\" is high and it's probable that we will see some degree of rotation into things that people have seemingly stopped caring about.",
+      "restatement": "Capital rotation out of crowded AI into under-owned themes is imminent enough to trade. No primary source can verify positioning/attention claims; flagged insufficient rather than assumed.",
+      "load_bearing": false,
+      "verdict": "insufficient",
+      "evidence": []
+    }
+  ],
+  "priced_in": {
+    "ticker": "VTR",
+    "expectations_summary": "Deterministic reverse-DCF (cli imply, verbatim): 'implied FCF CAGR +10.0% (price=89.06, shares=486169723.0, net_debt=0.0, fcf=1874184282.0, exit_multiple=23.1, years=5, discount=0.1)'. Because the exit multiple used is today's own 23.1x P/normalized-FFO, this says: at an UNCHANGED multiple the price only earns its 10% discount rate if FFO compounds ~10%/yr for five years - matching 2026's guided +9% (an exceptionally strong year) indefinitely, far above mid-single-digit REIT base rates. Any multiple compression raises the required growth further. The verified demand story is real, but at 23x FFO, near 52-week highs, RSI14 78.2 and +16.4% above the 200DMA (technicals.json, 2026-07-02), with 11 sell-side target raises since the Q1 print, little of it is left on the table at this entry.",
+    "variant_view": "What still looks under-modeled is DURATION, not direction: 19 consecutive quarters of occupancy gains with construction at 2012 lows and record-low 0.4% inventory growth implies a multi-year pricing-power runway that one-year guidance frames understate. But duration variant + full multiple + extended tape = a timing problem, not an entry. Our variant on the source's (public) framing: right theme, wrong week - wait for the reversion trigger.",
+    "inputs": [
+      {
+        "value": 89.06,
+        "unit": "USD share price (stockanalysis.com quote dated 26 Jun 2026; yfinance close 2026-07-02 was $92.21 per technicals.json - higher price only worsens the expectations math)",
+        "evidence": {
+          "url": "https://stockanalysis.com/stocks/vtr/",
+          "quote": "89.06",
+          "retrieved_at": "2026-07-02T16:56:00Z",
+          "is_primary": false
+        }
+      },
+      {
+        "value": 486169723.0,
+        "unit": "shares outstanding (10-Q cover, 2026-04-24)",
+        "evidence": {
+          "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0000740260/dei/EntityCommonStockSharesOutstanding.json",
+          "quote": "\"end\":\"2026-04-24\",\"val\":486169723",
+          "retrieved_at": "2026-07-02T16:46:30Z",
+          "is_primary": true
+        }
+      },
+      {
+        "value": 3.855,
+        "unit": "USD/share 2026 normalized FFO guidance midpoint (raised range $3.82-$3.89)",
+        "evidence": {
+          "url": "https://www.sec.gov/Archives/edgar/data/740260/000074026026000016/q12026earningsrelease.htm",
+          "quote": "$3.82 - $3.89",
+          "retrieved_at": "2026-07-02T16:53:00Z",
+          "is_primary": true
+        }
+      }
+    ],
+    "gap_score": 0.5,
+    "narrative_stage": "exhausted"
+  },
+  "decision": {
+    "verdict": "wait",
+    "ticker": "VTR",
+    "direction": "long",
+    "horizon_sessions": 10,
+    "kill_switches": [
+      {
+        "condition": "Re-entry trigger: VTR closes within 3% of its 50DMA (~$85.3 at run date) with RSI14 < 65 - re-run the ledger for a fresh entry decision",
+        "by_date": "2026-07-31"
+      },
+      {
+        "condition": "Thesis damage: Q2'26 earnings (due 2026-07-29) show SHOP same-store occupancy gain < 200bps YoY, or 2026 normalized-FFO guidance midpoint cut below $3.86 - downgrade to pass",
+        "by_date": "2026-07-30"
+      },
+      {
+        "condition": "Thesis broken: next NIC MAP quarterly release shows sector occupancy flat/down QoQ, or YoY inventory growth >= 1.0% (supply response starting) - downgrade to pass",
+        "by_date": "2026-10-31"
+      }
+    ],
+    "conviction": 0.0,
+    "size_frac": 0.0
+  },
+  "outcome": {
+    "realised_excess": null,
+    "hit": null,
+    "closed_at": null,
+    "kill_switch_fired": null
+  },
+  "forecast": null
+}

@@ -1,0 +1,28 @@
+# Vetted sources. Tier is COMPUTED (see ledger/trackrecord.py), never hand-set.
+defaults:
+  recency_days: 30
+  benchmark: SPY
+  horizon_sessions: 10        # thematic default, in TRADING sessions (research: edge ~10d)
+
+sources:
+  - id: lyn-alden
+    name: Lyn Alden
+    kind: rss                 # WordPress — same RSS path as Substack
+    feed: https://www.lynalden.com/feed/
+    venue: https://www.lynalden.com/
+    fetch_full: true          # feed is excerpt-only (verified) → fetch the post page
+
+  - id: citrini
+    name: Citrini Research
+    kind: rss                 # Substack; full text in feed (verified)
+    feed: https://www.citriniresearch.com/feed
+    venue: https://www.citriniresearch.com/
+
+  - id: example-bluesky
+    name: Example Macro Writer         # replace with a real handle before ingesting
+    kind: bluesky
+    handle: example.bsky.social
+
+  - id: x-manual
+    name: X account (manual)
+    kind: manual              # no free X API: create runs/<date>_x-manual/ and paste artifact.md

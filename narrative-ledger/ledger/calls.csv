@@ -1,0 +1,2 @@
+run_id,source_id,published_at,created_at,ticker,direction,horizon_sessions,verdict,conviction,size_frac,benchmark
+2026-07-03_citrini,citrini,2026-06-24T13:09:19+00:00,2026-07-02T16:51:55.409646+00:00,VTR,long,10,wait,0.0,0.0,SPY

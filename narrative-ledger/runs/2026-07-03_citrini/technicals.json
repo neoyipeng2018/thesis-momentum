@@ -1,0 +1,10 @@
+{
+  "ticker": "VTR",
+  "asof": "2026-07-02",
+  "price": 92.21,
+  "above_200dma": true,
+  "dist_50dma_pct": 0.0809,
+  "dist_200dma_pct": 0.164,
+  "rsi14": 78.2,
+  "ret_3m_pct": 0.1309
+}
