@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Narrative-Driven Strategy — Research Review</title>
+<style>
+  :root{
+    --paper:#f6f3ec;
+    --paper-2:#fbf9f4;
+    --ink:#1f1b16;
+    --ink-soft:#3a342c;
+    --muted:#6f665a;
+    --faint:#8b8275;
+    --rule:#ddd5c6;
+    --rule-strong:#c9bfac;
+    --accent:#8c2f24;      /* oxblood */
+    --accent-2:#2f4858;    /* slate teal */
+    --pass:#3f6b4f;
+    --caution:#9a6b1f;
+    --fail:#9a3b2f;
+    --neutral:#5a6b7a;
+    --chip:#efe9dd;
+    --serif:Georgia,"Iowan Old Style","Palatino Linotype","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:18px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 28px 120px}
+  /* Masthead */
+  header.mast{
+    border-bottom:2px solid var(--ink);margin-bottom:34px;padding:46px 0 22px;
+  }
+  .kicker{
+    font-family:var(--sans);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;margin-bottom:14px;
+  }
+  h1{
+    font-family:var(--serif);font-weight:700;font-size:40px;line-height:1.1;margin:0 0 14px;
+    letter-spacing:-.01em;
+  }
+  .dek{font-size:20px;color:var(--ink-soft);margin:0 0 20px;line-height:1.45}
+  .mast-meta{
+    font-family:var(--sans);font-size:12.5px;color:var(--muted);
+    display:flex;flex-wrap:wrap;gap:8px 22px;border-top:1px solid var(--rule);padding-top:14px;
+  }
+  .mast-meta b{color:var(--ink-soft);font-weight:600}
+  /* Section structure */
+  section{margin:52px 0}
+  .eyebrow{
+    font-family:var(--sans);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent-2);font-weight:700;margin-bottom:8px;
+  }
+  h2{
+    font-size:28px;line-height:1.18;margin:0 0 6px;font-weight:700;letter-spacing:-.01em;
+    padding-bottom:10px;border-bottom:1px solid var(--rule-strong);
+  }
+  h3{font-size:21px;margin:34px 0 8px;font-weight:700;line-height:1.25}
+  h4{font-family:var(--sans);font-size:14px;letter-spacing:.02em;margin:22px 0 6px;font-weight:700;color:var(--ink-soft)}
+  p{margin:0 0 16px}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(140,47,36,.32)}
+  a:hover{border-bottom-color:var(--accent)}
+  strong{font-weight:700}
+  em{font-style:italic}
+  .lead{font-size:19.5px;color:var(--ink-soft)}
+  ul,ol{margin:0 0 18px;padding-left:22px}
+  li{margin:0 0 9px}
+  li::marker{color:var(--faint)}
+  /* TOC */
+  nav.toc{
+    background:var(--paper-2);border:1px solid var(--rule);border-radius:10px;
+    padding:20px 24px;margin:30px 0 8px;
+  }
+  nav.toc .toc-h{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px}
+  nav.toc ol{list-style:none;padding:0;margin:0;column-count:2;column-gap:34px}
+  nav.toc li{margin:0 0 9px;font-family:var(--sans);font-size:14px;break-inside:avoid}
+  nav.toc a{border:none;color:var(--ink-soft)}
+  nav.toc a:hover{color:var(--accent)}
+  nav.toc .n{color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;margin-right:9px}
+  /* Callouts */
+  .box{border-radius:10px;padding:18px 22px;margin:24px 0;font-size:16.5px;line-height:1.55}
+  .box p:last-child{margin-bottom:0}
+  .box .lbl{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:8px;display:block}
+  .insight{background:#eef1ee;border:1px solid #cdd8cd;border-left:4px solid var(--pass)}
+  .insight .lbl{color:var(--pass)}
+  .warn{background:#f7efe4;border:1px solid #e6d4b8;border-left:4px solid var(--caution)}
+  .warn .lbl{color:var(--caution)}
+  .danger{background:#f6e9e6;border:1px solid #e3c6bf;border-left:4px solid var(--fail)}
+  .danger .lbl{color:var(--fail)}
+  .note{background:var(--paper-2);border:1px solid var(--rule);border-left:4px solid var(--neutral)}
+  .note .lbl{color:var(--neutral)}
+  /* Tables */
+  .tbl-wrap{overflow-x:auto;margin:22px 0}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;font-family:var(--sans);line-height:1.4}
+  caption{caption-side:top;text-align:left;font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:8px;font-style:normal}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{
+    background:var(--chip);border-bottom:1.5px solid var(--rule-strong);
+    font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;
+  }
+  tbody tr:nth-child(even){background:rgba(0,0,0,.018)}
+  td b{color:var(--ink)}
+  .mono{font-family:var(--mono);font-size:12.5px}
+  /* status pills */
+  .pill{display:inline-block;font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.04em;
+    padding:2px 8px;border-radius:20px;white-space:nowrap;text-transform:uppercase}
+  .p-pass{background:#e2ece4;color:var(--pass)}
+  .p-cau{background:#f2e7d2;color:var(--caution)}
+  .p-fail{background:#f1ddd8;color:var(--fail)}
+  .p-neu{background:#e3e8ec;color:var(--neutral)}
+  /* figure / diagram */
+  figure{margin:28px 0;border:1px solid var(--rule);border-radius:10px;background:var(--paper-2);padding:20px 18px 14px}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:12px;text-align:center}
+  /* recommendation cards */
+  .rec{border:1px solid var(--rule-strong);border-radius:10px;padding:18px 20px;margin:16px 0;background:var(--paper-2)}
+  .rec h4{margin-top:0;color:var(--accent);font-size:15px;display:flex;gap:10px;align-items:baseline}
+  .rec h4 .rn{font-family:var(--mono);font-size:13px;background:var(--accent);color:#fff;border-radius:5px;padding:1px 7px}
+  .rec p{font-size:16px;margin-bottom:0}
+  .rec .keep{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:9px}
+  /* small caps figure numbers in prose */
+  .src-grid{font-family:var(--sans);font-size:14px}
+  .src-grid h4{margin:18px 0 6px}
+  .src-grid ol{padding-left:20px}
+  .src-grid li{margin-bottom:7px;line-height:1.4}
+  hr.soft{border:none;border-top:1px solid var(--rule);margin:40px 0}
+  .foot{font-family:var(--sans);font-size:12.5px;color:var(--muted);border-top:2px solid var(--ink);margin-top:60px;padding-top:18px}
+  sup a{font-size:.7em;border:none;color:var(--accent);font-weight:700;padding:0 1px}
+  .tag{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--accent-2);text-transform:uppercase}
+  @media (max-width:640px){
+    body{font-size:17px}
+    h1{font-size:31px}
+    h2{font-size:24px}
+    nav.toc ol{column-count:1}
+    .wrap{padding:0 18px 80px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Narrative-Momentum · Research Review</div>
+    <h1>Following Trusted Accounts, Validating Their Claims</h1>
+    <p class="dek">How AI/agentic research pipelines and "follow-the-smart-money" strategies are actually built — and what that implies for a disciplined macro &amp; thematic-equities system.</p>
+    <div class="mast-meta">
+      <span><b>Prepared for</b> Neo</span>
+      <span><b>Date</b> 30 June 2026</span>
+      <span><b>Scope</b> AI/agentic LLM pipelines · FinTwit copy-trading &amp; signal services</span>
+      <span><b>Asset context</b> Macro &amp; thematic equities</span>
+      <span><b>Status</b> Research, not investment advice</span>
+    </div>
+  </header>
+
+  <p class="lead">You want to follow a handful of vetted writers on X, Bluesky and Substack, pull their theses apart, check the claims against reality, and only act on what survives — trusting a source only as far as its track record earns. That instinct is sound, and it is also where almost everyone goes wrong. This review maps how comparable systems are built, where their edge actually comes from, where it leaks away, and how to turn "I trust this account" into something you can measure and size.</p>
+
+  <nav class="toc" aria-label="Contents">
+    <div class="toc-h">Contents</div>
+    <ol>
+      <li><span class="n">01</span><a href="#summary">Executive summary</a></li>
+      <li><span class="n">02</span><a href="#scope">Scope &amp; the central problem</a></li>
+      <li><span class="n">03</span><a href="#pipelines">How AI/agentic pipelines work</a></li>
+      <li><span class="n">04</span><a href="#verify">Claim verification methods</a></li>
+      <li><span class="n">05</span><a href="#products">What the real products automate</a></li>
+      <li><span class="n">06</span><a href="#copytrading">Follow-the-account, in practice</a></li>
+      <li><span class="n">07</span><a href="#trackrecord">Turning trust into measurement</a></li>
+      <li><span class="n">08</span><a href="#discipline">The buy-side validation layer</a></li>
+      <li><span class="n">09</span><a href="#blueprint">A reference workflow</a></li>
+      <li><span class="n">10</span><a href="#critique">Critique of thesis-sidecar</a></li>
+      <li><span class="n">11</span><a href="#recommendations">Design recommendations</a></li>
+      <li><span class="n">12</span><a href="#pitfalls">Pitfalls &amp; anti-patterns</a></li>
+      <li><span class="n">13</span><a href="#next">What to decide next</a></li>
+      <li><span class="n">14</span><a href="#sources">Sources</a></li>
+    </ol>
+  </nav>
+
+  <!-- 01 -->
+  <section id="summary">
+    <div class="eyebrow">01 — Synthesis</div>
+    <h2>Executive summary</h2>
+    <p>Across both families I reviewed — agentic LLM research systems and social/copy-trading strategies — the same shape recurs. The <em>idea</em> is cheap and abundant; the <em>edge</em> lives in three places that are tedious and therefore neglected: honestly measuring whose calls are worth borrowing, mechanically verifying claims before acting, and holding the position over the horizon where the narrative actually pays. Nine takeaways:</p>
+    <ol>
+      <li><strong>Signal from social/narrative sources is real but conditional and short-lived.</strong> LLM-scored news sentiment predicts next-day returns (Lopez-Lira &amp; Tang report ~90% directional hit rates on the initial reaction), and StockTwits sentiment predicts returns mainly around volume spikes and events — but the edge decays fast and shrinks as adoption rises.<sup><a href="#s-llira">1</a><a href="#s-stwits">9</a></sup></li>
+      <li><strong>Most "finfluencers" are negatively skilled.</strong> The majority of social posters are <em>anti-skilled</em>: their bullishness predicts retail order flow that earns negative returns. A minority are genuinely skilled. Curation is the whole game, and it must be evidence-based, not vibes.<sup><a href="#s-finf">8</a></sup></li>
+      <li><strong>Copy-trading, the purest "follow the account" product, mostly loses for followers.</strong> Provider-side incentives, herding, and the disposition effect work against you; eToro itself discloses 51% of retail CFD accounts lose money. "Mirror a top trader" is the cautionary tale your design must beat, not the template to copy.<sup><a href="#s-etoro">7</a></sup></li>
+      <li><strong>The defensible architecture separates two jobs.</strong> LLMs are strong and safe at <em>extraction, structuring and verification</em> of what a source claimed; they are weak and dangerous at <em>prediction</em>. Keep them on the first job.</li>
+      <li><strong>Verification is a solved-enough engineering problem.</strong> Decompose prose into atomic claims, retrieve evidence per claim, and check support — the SAFE / Chain-of-Verification pattern. SAFE matches human fact-checkers 72% of the time at ~1/20th the cost; CoVe materially cuts hallucination by forcing prose into testable questions.<sup><a href="#s-safe">2</a><a href="#s-cove">3</a></sup></li>
+      <li><strong>Track record must be a computed object, not an adjective.</strong> TipRanks' three-factor model — hit rate, average return per call, and statistical significance from volume — is a usable template for scoring the accounts you follow, provided you fix timestamping, survivorship and hindsight-edit problems.<sup><a href="#s-tip">10</a></sup></li>
+      <li><strong>The buy-side adds the layer FinTwit lacks: what's already priced in.</strong> A correct thesis on an over-owned name loses money. Mauboussin's reverse-DCF / expectations framing, base rates, and a Klein pre-mortem are the discipline that converts a borrowed idea into a trade with asymmetry.<sup><a href="#s-maub">11</a><a href="#s-premortem">12</a></sup></li>
+      <li><strong>Backtests of LLM judgment are largely contaminated.</strong> Models trained on the internet have already seen your test window; "Profit Mirage" shows FinMem leaves 82% of predictions unchanged under perturbation (memorisation, not foresight), and agents that shine on static benchmarks underperform live. Never backtest the LLM's own opinion over its training period.<sup><a href="#s-mirage">5</a></sup></li>
+      <li><strong>Your prototype already has the right spine but the wrong center of gravity.</strong> thesis-sidecar's Gate 0–5 and adversarial-PM judge are genuinely good ideas; the mess is schema sprawl (a new JSON object bolted on every eval iteration) and an eval that rewarded <em>presence of sections</em> over decision usefulness. It is missing the one loop that would make it useful: validated thesis → sized position → realised outcome → source re-score.</li>
+      <li><strong>Your real edge is process and horizon, not idea-generation.</strong> This matches your own backtests: the narrative filter helps at ~10-day holds, not at 1 day, and sizing is the lever. Borrowing ideas is fine; the system's job is to be the disciplined, patient, accountable operator the original poster usually is not.</li>
+    </ol>
+    <div class="box insight">
+      <span class="lbl">The one-line thesis</span>
+      <p>Don't build an idea generator — build an <strong>accountability engine</strong>: a small set of measured sources, a mechanical claim-verifier, a "what's priced in" gate, and a feedback loop that re-scores each source on realised outcomes. The alpha is in the discipline you add <em>after</em> the tweet, and in the patience to hold past day one.</p>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section id="scope">
+    <div class="eyebrow">02 — Framing</div>
+    <h2>Scope &amp; the central problem</h2>
+    <p>This review covers the two families you selected. The first is <strong>AI/agentic LLM pipelines</strong> — the engineering pattern behind systems that read documents, extract assertions and check them. The second is <strong>FinTwit copy-trading and signal services</strong> — the live, money-on-the-line version of "follow trusted accounts," and the richest source of evidence on what goes wrong. I read both through the lens of <strong>macro &amp; thematic equities</strong>, which is where your watchlist already sits (Citrini, Lyn Alden, Doomberg, SemiAnalysis, Kuppy and similar).</p>
+    <p>The problem all of these systems are really solving is one your own prototype README states crisply: social research is <em>"a firehose of confident theses with no accountability,"</em> and the failure mode is <em>"chasing a correct idea at the wrong price."</em> Everything below is about installing the accountability and the price-discipline that the source did not.</p>
+    <p>Three structural facts frame the rest of the document:</p>
+    <ul>
+      <li><strong>The idea is not the scarce input.</strong> Good macro/thematic theses are published openly and constantly. If your system's value proposition is "we surface ideas," you have no moat.</li>
+      <li><strong>Narrative edges are horizon-bounded.</strong> Narratives move prices and then mean-revert toward fundamentals (Shiller; Tetlock). Act too early and you're early; act on the spike and you buy the reversion; hold the right window and you capture the drift.<sup><a href="#s-shiller">13</a><a href="#s-tetlock">14</a></sup></li>
+      <li><strong>Trust is a measurement, not a feeling.</strong> "Good track record" has to become a number with a confidence interval, or it will quietly become "accounts I like."</li>
+    </ul>
+  </section>
+
+  <!-- 03 -->
+  <section id="pipelines">
+    <div class="eyebrow">03 — The build pattern</div>
+    <h2>How AI / agentic pipelines work</h2>
+    <p>Strip the branding from AlphaSense, Brightwave, Rogo, Fintool and the academic trading agents and you find one canonical pipeline. Each stage has a well-understood technique and a characteristic failure mode. This is the skeleton your system should be built on.</p>
+
+    <figure aria-label="Reference pipeline diagram">
+      <svg viewBox="0 0 940 360" role="img" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#8b8275"/>
+          </marker>
+          <marker id="arrowback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#8c2f24"/>
+          </marker>
+          <style>
+            .bx{fill:#fbf9f4;stroke:#c9bfac;stroke-width:1.4;rx:8}
+            .bt{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;fill:#1f1b16}
+            .bs{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:10.5px;fill:#6f665a}
+            .ph{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;fill:#2f4858}
+          </style>
+        </defs>
+
+        <!-- Row 1: extraction & verification -->
+        <text x="20" y="24" class="ph">SAFE LLM WORK · EXTRACT &amp; VERIFY</text>
+        <g>
+          <rect x="20"  y="36" width="138" height="64" rx="8" class="bx"/>
+          <text x="89" y="62" text-anchor="middle" class="bt">1 · Curate</text>
+          <text x="89" y="80" text-anchor="middle" class="bs">vetted accounts</text>
+          <text x="89" y="93" text-anchor="middle" class="bs">+ track-record score</text>
+
+          <rect x="186" y="36" width="138" height="64" rx="8" class="bx"/>
+          <text x="255" y="62" text-anchor="middle" class="bt">2 · Ingest</text>
+          <text x="255" y="80" text-anchor="middle" class="bs">posts, letters,</text>
+          <text x="255" y="93" text-anchor="middle" class="bs">transcripts → chunk</text>
+
+          <rect x="352" y="36" width="138" height="64" rx="8" class="bx"/>
+          <text x="421" y="58" text-anchor="middle" class="bt">3 · Extract</text>
+          <text x="421" y="76" text-anchor="middle" class="bs">thesis → atomic</text>
+          <text x="421" y="89" text-anchor="middle" class="bs">claims (typed)</text>
+
+          <rect x="518" y="36" width="138" height="64" rx="8" class="bx"/>
+          <text x="587" y="58" text-anchor="middle" class="bt">4 · Verify</text>
+          <text x="587" y="76" text-anchor="middle" class="bs">retrieve evidence</text>
+          <text x="587" y="89" text-anchor="middle" class="bs">per claim · entail</text>
+
+          <rect x="684" y="36" width="138" height="64" rx="8" class="bx"/>
+          <text x="753" y="58" text-anchor="middle" class="bt">5 · Price-in</text>
+          <text x="753" y="76" text-anchor="middle" class="bs">what's discounted?</text>
+          <text x="753" y="89" text-anchor="middle" class="bs">reverse-DCF</text>
+        </g>
+        <line x1="158" y1="68" x2="184" y2="68" stroke="#8b8275" stroke-width="1.6" marker-end="url(#arrow)"/>
+        <line x1="324" y1="68" x2="350" y2="68" stroke="#8b8275" stroke-width="1.6" marker-end="url(#arrow)"/>
+        <line x1="490" y1="68" x2="516" y2="68" stroke="#8b8275" stroke-width="1.6" marker-end="url(#arrow)"/>
+        <line x1="656" y1="68" x2="682" y2="68" stroke="#8b8275" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+        <!-- connector down -->
+        <line x1="753" y1="100" x2="753" y2="150" stroke="#8b8275" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+        <!-- Row 2: human decision & sizing -->
+        <text x="20" y="176" class="ph">HUMAN-OWNED · DECIDE, SIZE, HOLD</text>
+        <g>
+          <rect x="684" y="188" width="138" height="64" rx="8" class="bx"/>
+          <text x="753" y="214" text-anchor="middle" class="bt">6 · Conviction</text>
+          <text x="753" y="232" text-anchor="middle" class="bs">score = claims ×</text>
+          <text x="753" y="245" text-anchor="middle" class="bs">source × price</text>
+
+          <rect x="518" y="188" width="138" height="64" rx="8" class="bx"/>
+          <text x="587" y="214" text-anchor="middle" class="bt">7 · Falsify</text>
+          <text x="587" y="232" text-anchor="middle" class="bs">pre-mortem +</text>
+          <text x="587" y="245" text-anchor="middle" class="bs">kill-switches</text>
+
+          <rect x="352" y="188" width="138" height="64" rx="8" class="bx"/>
+          <text x="421" y="214" text-anchor="middle" class="bt">8 · Size &amp; hold</text>
+          <text x="421" y="232" text-anchor="middle" class="bs">vol-target ·</text>
+          <text x="421" y="245" text-anchor="middle" class="bs">~10-day horizon</text>
+
+          <rect x="186" y="188" width="138" height="64" rx="8" class="bx"/>
+          <text x="255" y="214" text-anchor="middle" class="bt">9 · Log outcome</text>
+          <text x="255" y="232" text-anchor="middle" class="bs">realised P&amp;L vs</text>
+          <text x="255" y="245" text-anchor="middle" class="bs">thesis &amp; horizon</text>
+        </g>
+        <line x1="684" y1="220" x2="658" y2="220" stroke="#8b8275" stroke-width="1.6" marker-end="url(#arrow)"/>
+        <line x1="518" y1="220" x2="492" y2="220" stroke="#8b8275" stroke-width="1.6" marker-end="url(#arrow)"/>
+        <line x1="352" y1="220" x2="326" y2="220" stroke="#8b8275" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+        <!-- feedback loop back to curate -->
+        <path d="M186,232 L120,232 L120,150 L89,150 L89,102" fill="none" stroke="#8c2f24" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#arrowback)"/>
+        <text x="44" y="138" class="bs" fill="#8c2f24" font-weight="700">re-score source</text>
+      </svg>
+      <figcaption>The canonical pipeline. Stages 1–5 are safe LLM/retrieval work (extract and verify what was said). Stages 6–9 are human-owned judgment, sizing and accountability. The dashed loop — outcome feeding back into each source's track-record score — is the part almost everyone omits, and the part that operationalises "trusted accounts."</figcaption>
+    </figure>
+
+    <h3>The stages, concretely</h3>
+    <p><strong>Ingestion &amp; segmentation.</strong> Pull the source's long-form artefact (Substack post, X thread, podcast transcript, fund letter), normalise it, and split into retrievable chunks with precise timestamps. Timestamp precision is not cosmetic: it is your only defence against lookahead bias later.</p>
+    <p><strong>Claim extraction &amp; typing.</strong> A thesis is, as your own Gate 1 puts it, "a bundle of claims wearing a trench coat." The model rewrites the prose into discrete assertions and tags each by type — factual, valuation, catalyst, price/technical, or expression — so each can be checked by the right method. Keeping the author's exact quote alongside the paraphrase is important; drift between them is itself a finding.</p>
+    <p><strong>Atomic decomposition.</strong> The verification literature's key insight is that you must check at the granularity of <em>individual facts</em>, not sentences — one sentence often carries several checkable facts (this is exactly what SAFE does before fact-checking).<sup><a href="#s-safe">2</a></sup> "Backlog is growing" and "backlog went $25B→$42B YoY" are different claims with different evidentiary burdens.</p>
+    <p><strong>Evidence retrieval &amp; verification.</strong> For each atomic claim, issue targeted searches or RAG queries against primary sources (filings, regulators, data series), then judge whether the evidence <em>supports</em>, <em>contradicts</em>, or is <em>insufficient</em> — covered in detail in §04.</p>
+    <p><strong>Synthesis with mandatory citation.</strong> The model assembles a verdict where every load-bearing number is bound to a retrieved source. Enterprise tools enforce this — AlphaSense and Fintool both answer with citations to every source used, precisely because an un-cited financial number is a liability.<sup><a href="#s-products">4</a></sup></p>
+
+    <div class="box note">
+      <span class="lbl">Agentic patterns worth borrowing</span>
+      <p>The <strong>generator–critic</strong> split (one model drafts, a second adversarially scores) is the pattern behind your own "adversarial PM judge," and behind Reflexion-style self-correction. It works — with a caveat: <strong>LLM-as-judge has known biases</strong> (verbosity, position, self-preference). Treat the judge as a useful filter, not ground truth, and keep its rubric anchored to externally checkable facts rather than style. <strong>Tool use</strong> (retrieval, a real DCF calculator, a charting/price API) matters more than cleverer prompting: it moves load-bearing numbers out of the model's imagination and into deterministic code.</p>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section id="verify">
+    <div class="eyebrow">04 — The verifier</div>
+    <h2>Claim verification methods</h2>
+    <p>This is the most transferable part of the AI literature for you, because claim-checking — not prediction — is where your system earns its keep. Four methods, in rough order of how directly they map onto your build:</p>
+
+    <div class="tbl-wrap">
+    <table>
+      <caption>Automated factuality methods and what they actually do</caption>
+      <thead>
+        <tr><th style="width:20%">Method</th><th style="width:46%">Mechanism</th><th style="width:34%">Result &amp; relevance to you</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>SAFE</b><br><span class="mono">DeepMind, 2024</span></td>
+          <td>Decompose a long answer into individual facts; for each, an agent issues multi-step Google searches and rates it <em>supported / not-supported</em> against results.</td>
+          <td>Agrees with human annotators <b>72%</b> of the time; wins <b>76%</b> of sampled disagreements; <b>~20×</b> cheaper than humans.<sup><a href="#s-safe">2</a></sup> This is essentially your fact-check gate, made mechanical.</td>
+        </tr>
+        <tr>
+          <td><b>Chain-of-Verification</b><br><span class="mono">CoVe, 2023</span></td>
+          <td>4 steps: draft answer → <em>plan</em> verification questions → answer them <em>independently</em> → revise. Separates "writing" from "fact-finding," forcing prose into falsifiable questions.</td>
+          <td>Cuts hallucination materially (FActScore 63.7→71.4 on a biography task).<sup><a href="#s-cove">3</a></sup> Use it to interrogate the <em>author's</em> claims, not just your own output.</td>
+        </tr>
+        <tr>
+          <td><b>FActScore</b><br><span class="mono">metric, 2023</span></td>
+          <td>Precision metric: fraction of a generation's atomic facts that are supported by a trusted knowledge source.</td>
+          <td>A scoring discipline — gives you a per-report "% of claims verified," far more honest than a pass/fail.</td>
+        </tr>
+        <tr>
+          <td><b>NLI / FEVER entailment</b><br><span class="mono">claim ↔ evidence</span></td>
+          <td>Classify each (claim, evidence) pair as <em>supports / refutes / not-enough-info</em> using a natural-language-inference model.</td>
+          <td>The cheap, deterministic core of the "support" judgment; pairs well with retrieval and avoids asking the generator to grade itself.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>The common thread — and the design principle to lift wholesale — is <strong>decompose, retrieve per claim, judge support, then abstain when evidence is insufficient.</strong> Crucially, none of these eliminate error: CoVe's own authors note hallucinations persist for subtle reasoning, opinion and attribution claims.<sup><a href="#s-cove">3</a></sup> So verification grades <em>confidence</em>, it does not certify truth — which is why a human still owns the trade.</p>
+
+    <div class="box warn">
+      <span class="lbl">Why financial numbers are the danger zone</span>
+      <p>LLMs hallucinate <em>specific figures</em> with fluent confidence — the single worst failure for a trading system, because a fabricated backlog or margin looks exactly like a real one. Two controls are non-negotiable: (1) every load-bearing number must carry a retrieved citation or it is treated as unverified; (2) computations (multiples, DCF, R:R) run in code on cited inputs, never "in the model's head." Your prototype's instinct here — "never present an uncited factual claim as verified" — is exactly right and should be enforced by the renderer, not by good intentions.</p>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section id="products">
+    <div class="eyebrow">05 — The market</div>
+    <h2>What the real products automate</h2>
+    <p>The commercial AI-research tools are instructive less for their models than for <em>which stage of the pipeline they sell</em> and how they handle trust. Note that every serious one leans on citation as its credibility mechanism, and none of them claims to make the trading decision for you — they automate retrieval, extraction and drafting, then hand off.<sup><a href="#s-products">4</a><a href="#s-forbes">6</a></sup></p>
+
+    <div class="tbl-wrap">
+    <table>
+      <caption>Selected AI investment-research platforms (2025–26)</caption>
+      <thead>
+        <tr><th style="width:16%">Platform</th><th style="width:18%">Primary job</th><th style="width:40%">What it automates</th><th style="width:26%">Trust mechanism</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>AlphaSense</b> <span class="tag">+ Tegus</span></td><td>Search &amp; market intelligence</td><td>Semantic search across filings, broker research, expert-call transcripts and news; summarisation with follow-ups.</td><td>Answers with citations to all sources used.</td></tr>
+        <tr><td><b>Fintool</b></td><td>Filings/earnings analyst</td><td>Extracts and structures data from SEC filings, earnings calls and disclosures; natural-language Q&amp;A over them.</td><td>Citations to every source; document-grounded.</td></tr>
+        <tr><td><b>Rogo</b></td><td>Workflow copilot</td><td>Conversational Q&amp;A, summarisation and drafting over connected internal data + a library of filings, transcripts, news.</td><td>Source-grounded over connected corpora.</td></tr>
+        <tr><td><b>Brightwave</b></td><td>Autonomous research</td><td>Agents produce comprehensive research deliverables from large document sets (esp. private-markets deal rooms).</td><td>Deliverable cites underlying documents.</td></tr>
+        <tr><td><b>RavenPack / Bigdata</b></td><td>Sentiment &amp; events data</td><td>Structures news/social into machine-readable sentiment and event signals for quant consumption.</td><td>Provenance + timestamped event tags.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p><strong>The lesson for you:</strong> the viable product category is "<em>grounded research assistant that shows its work</em>," not "<em>oracle that tells you what to buy.</em>" Your system is a private, opinionated version of the former, specialised to a handful of trusted narrative sources and bolted onto a sizing/horizon discipline they don't provide.</p>
+
+    <h3>What the academic trading agents tell us — mostly a warning</h3>
+    <p>The research-agent literature (TradingAgents' multi-agent debate, FinMem's hierarchical memory, FinAgent's multimodal memorisation) reports glittering backtests.<sup><a href="#s-mirage">5</a></sup> Treat those numbers with deep suspicion. The same literature has now produced its own debunking:</p>
+    <ul>
+      <li><strong>Information leakage / lookahead bias is pervasive.</strong> An LLM trained through 2024 has already ingested the outcomes for any pre-2024 backtest window — it can <em>retrieve</em> the answer rather than predict it. "Profit Mirage" finds FinMem leaves <b>82%</b> of its predictions unchanged when inputs are perturbed, the signature of memorisation.<sup><a href="#s-mirage">5</a></sup></li>
+      <li><strong>Static-benchmark skill doesn't survive contact with live markets.</strong> When evaluated in real time (LiveTradeBench), agents that topped static leaderboards underperformed.<sup><a href="#s-mirage">5</a></sup></li>
+      <li><strong>Even sentiment-forecasting alpha decays as everyone adopts it.</strong> Lopez-Lira &amp; Tang find strategy returns fall as LLM adoption rises — the edge is real but competed away.<sup><a href="#s-llira">1</a></sup></li>
+    </ul>
+    <p>This is the empirical case for the architectural split in §03: let the LLM <em>read and verify</em>, and refuse to let it (or its backtest) <em>predict over its own training window.</em></p>
+  </section>
+
+  <!-- 06 -->
+  <section id="copytrading">
+    <div class="eyebrow">06 — The cautionary family</div>
+    <h2>Follow-the-account, in practice</h2>
+    <p>Copy-trading is "follow trusted accounts" taken to its literal extreme: capital auto-replicates a chosen operator. Studying it tells you exactly which design choices destroy followers — so you can invert them.</p>
+
+    <h3>How the platforms work</h3>
+    <p>On eToro's CopyTrader, "Popular Investors" expose public portfolios with a risk score, performance history and every live position. A follower allocates a minimum (from <b>$200</b>), and from that point every trade is replicated proportionally, with no extra fee beyond spreads. ZuluTrade and others rank "signal providers" on similar surfaced metrics.<sup><a href="#s-etoro">7</a></sup> The ranking metrics are the tell: they emphasise headline return and popularity, which are exactly the metrics most distorted by survivorship and risk-seeking.</p>
+
+    <h3>The performance verdict</h3>
+    <p>The evidence is sobering and consistent:</p>
+    <ul>
+      <li><strong>Most followers lose.</strong> eToro's own regulatory disclosure: <b>51% of retail CFD accounts lose money.</b> General day-trading studies put consistent winners at 10–15%.<sup><a href="#s-etoro">7</a></sup></li>
+      <li><strong>Incentives are misaligned.</strong> Providers are rewarded for copiers and visibility, which encourages risk-seeking and over-trading; followers inherit the disposition effect and herding without the provider's context or exit timing.</li>
+      <li><strong>Most posters are anti-skilled.</strong> The "Finfluencers" study finds the majority are negatively skilled — their bullish sentiment predicts retail order flow that earns <em>negative</em> returns — while a skilled minority genuinely predicts positive returns. Naïvely following the loud average is a wealth-transfer mechanism.<sup><a href="#s-finf">8</a></sup></li>
+    </ul>
+
+    <h3>Signal services &amp; sentiment data</h3>
+    <p>One tier up from copy-trading sit alt-data sentiment vendors (RavenPack, Social Market Analytics, StockTwits feeds) that sell structured sentiment rather than trades. The academic read on raw social sentiment is that it works <em>conditionally</em>: StockTwits-classified sentiment predicts returns around events and message-volume spikes, but not unconditionally day-to-day; Twitter sentiment creates a multi-day mispricing that slowly corrects.<sup><a href="#s-stwits">9</a></sup> Tetlock's classic result is the template for the mechanism: high media pessimism pushes prices down then reverts to fundamentals — sentiment is a <em>transient</em> force, not a fundamental one.<sup><a href="#s-tetlock">14</a></sup></p>
+
+    <div class="box insight">
+      <span class="lbl">Invert the copy-trading failures into design rules</span>
+      <p>① Rank sources on <strong>risk-adjusted, benchmark-relative, horizon-matched</strong> performance — not headline return or follower count. ② Never auto-replicate; <strong>borrow the idea, run it through your own gates.</strong> ③ Weight by <strong>measured skill</strong>, and treat unmeasured/anti-skilled sources as zero or contrarian. ④ Assume the edge is <strong>transient</strong> and size/hold accordingly rather than marrying the position.</p>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section id="trackrecord">
+    <div class="eyebrow">07 — The crux</div>
+    <h2>Turning trust into measurement</h2>
+    <p>Your premise — "these accounts must have good track records so we can trust their outputs" — is the right premise and the hardest part to do honestly. The reference template is TipRanks' three-factor analyst model; the hard part is the adjustments it doesn't fully solve.</p>
+
+    <div class="tbl-wrap">
+    <table>
+      <caption>TipRanks-style scoring, and what it leaves you to fix</caption>
+      <thead><tr><th style="width:26%">Factor</th><th style="width:38%">What it measures</th><th style="width:36%">The trap you must close</th></tr></thead>
+      <tbody>
+        <tr><td><b>Success rate (hit ratio)</b></td><td>Share of calls that made money — binary per call, so one huge win can't mask ten losses.<sup><a href="#s-tip">10</a></sup></td><td>Hit rate ignores magnitude; a 40%-hit source with huge winners can beat a 70%-hit source. Pair it with average return.</td></tr>
+        <tr><td><b>Average return per call</b></td><td>Mean performance across calls — captures overall skill, not lucky single hits.<sup><a href="#s-tip">10</a></sup></td><td>Absolute return rewards beta and bull markets. Use <em>benchmark-relative</em> (vs sector/SPX) and ideally risk-adjusted return.</td></tr>
+        <tr><td><b>Statistical significance (volume)</b></td><td>Rankings require a minimum call count (~10–15) so a couple of lucky calls can't top the table.<sup><a href="#s-tip">10</a></sup></td><td>Low-frequency macro writers may never reach significance; hold their scores as wide confidence intervals, not point estimates.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h4>The four problems no vendor solves for you</h4>
+    <ul>
+      <li><strong>Timestamp &amp; attribution.</strong> You must log the call at the moment it was public, with the exact instrument and direction. Posts get edited; screenshots lie. Capture the call into your own immutable store on the day, or you are scoring a curated highlight reel.</li>
+      <li><strong>Horizon.</strong> A call is only right or wrong relative to a holding period. Macro/thematic theses need weeks-to-months windows; grading them at one day (as your own backtests show the live book effectively did) throws away the edge. Fix the horizon per source/claim type <em>before</em> scoring.</li>
+      <li><strong>Survivorship &amp; selection.</strong> You notice an account <em>because</em> it was recently right. Counter it by (a) scoring only calls made after you started tracking, and (b) recording the misses and the silent thesis-creep, not just the wins.</li>
+      <li><strong>Base rates.</strong> Score each source against the base rate of its claim type — being bullish equities in a bull market is not skill. Mauboussin's point applies directly: anchor on the reference class, then adjust.<sup><a href="#s-maub">11</a></sup></li>
+    </ul>
+
+    <div class="box note">
+      <span class="lbl">A usable source score</span>
+      <p>Maintain, per source and per claim-type, a rolling vector: <span class="mono">{ benchmark-relative hit rate, avg excess return at the matched horizon, n, recency-weighted decay, fact-check pass rate }</span>. Collapse to a single <em>conviction weight</em> ∈ [0,1] with a confidence interval driven by n. This weight feeds position sizing in §09 — a high-skill, well-evidenced source on a verified claim sizes up; an unproven source sizes to a starter or to zero. This is the dashed feedback loop in the diagram, and it is the single highest-value thing to build.</p>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section id="discipline">
+    <div class="eyebrow">08 — The missing layer</div>
+    <h2>The buy-side validation layer</h2>
+    <p>FinTwit gives you a thesis. The buy-side adds the four checks that decide whether a <em>true</em> thesis is also a <em>profitable</em> one. Your prototype's Gates 3–5 already reach for these; the literature confirms they're the right four.</p>
+    <ul>
+      <li><strong>What's already priced in (variant perception).</strong> The most important question and the one tweets skip. Mauboussin's expectations investing inverts the DCF: start from price, solve for the growth/margin/return the market already requires, and ask what you believe that differs.<sup><a href="#s-maub">11</a></sup> A correct, consensus thesis with no expectations gap is not a trade.</li>
+      <li><strong>Base rates.</strong> Replace the inside-view story with the outside-view frequency: how often do companies/themes like this actually deliver what the thesis assumes?<sup><a href="#s-maub">11</a></sup></li>
+      <li><strong>Pre-mortem &amp; falsification.</strong> Klein's pre-mortem — assume the trade has failed, then explain why — surfaces failure modes standard risk analysis misses; "prospective hindsight" has been found to lift the ability to identify reasons for outcomes by ~30%.<sup><a href="#s-premortem">12</a></sup> Pre-register the falsifiers before the position exists, exactly as your Gate 5 demands.</li>
+      <li><strong>Position sizing &amp; horizon.</strong> The expression and size are where the edge is realised or surrendered. This is consistent with your own research memory: the narrative filter helps at ~10-day holds, not at 1 day, and sizing/vol-targeting is the real lever.</li>
+    </ul>
+    <div class="box warn">
+      <span class="lbl">Narrative is fuel, not foundation</span>
+      <p>Shiller's <em>Narrative Economics</em> argues narratives spread like contagions and genuinely move prices; Tetlock shows sentiment moves prices then reverts to fundamentals.<sup><a href="#s-shiller">13</a><a href="#s-tetlock">14</a></sup> The operational consequence: a narrative edge has a half-life. Your gates should estimate <em>where in the narrative's life</em> a thesis is (early / crowding / exhausted) and refuse the late, crowded, extended setups — which is what your Gate 4 extension check is for.</p>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section id="blueprint">
+    <div class="eyebrow">09 — The blueprint</div>
+    <h2>A reference workflow for the new system</h2>
+    <p>Putting it together, here is the end-to-end system the evidence points to. Each stage names its method, its tool surface, and the failure mode it must control.</p>
+    <div class="tbl-wrap">
+    <table>
+      <caption>Reference workflow — stage by stage</caption>
+      <thead><tr><th style="width:7%">#</th><th style="width:20%">Stage</th><th style="width:33%">Method</th><th style="width:24%">Owner</th><th style="width:16%">Failure controlled</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>Curate</b></td><td>Small vetted set; each carries a live track-record score (§07).</td><td>You + scorer</td><td>Following the loud anti-skilled average</td></tr>
+        <tr><td>2</td><td><b>Ingest</b></td><td>Pull post/letter/transcript; chunk; <b>stamp exact publish time</b>.</td><td>Pipeline</td><td>Lookahead/leakage</td></tr>
+        <tr><td>3</td><td><b>Extract</b></td><td>Thesis → typed atomic claims (factual / valuation / catalyst / price / expression).</td><td>LLM</td><td>Vague, unfalsifiable theses</td></tr>
+        <tr><td>4</td><td><b>Verify</b></td><td>Per-claim retrieval vs primary sources; entailment; FActScore-style pass rate.</td><td>LLM + retrieval</td><td>Hallucinated facts</td></tr>
+        <tr><td>5</td><td><b>Price-in</b></td><td>Reverse-DCF / expectations bridge; base rates; comps.</td><td>Code + you</td><td>Right thesis, wrong price</td></tr>
+        <tr><td>6</td><td><b>Conviction</b></td><td>Score = fact-check pass × source weight × expectations gap × narrative-stage.</td><td>System</td><td>Treating all ideas as equal</td></tr>
+        <tr><td>7</td><td><b>Falsify</b></td><td>Pre-mortem; ≥3 dated, measurable kill-switches; bear steelman.</td><td>You</td><td>Unfalsifiable conviction</td></tr>
+        <tr><td>8</td><td><b>Size &amp; hold</b></td><td>Vol-targeted size scaled by conviction; pre-set ~10-day+ horizon.</td><td>You</td><td>Under-holding the edge</td></tr>
+        <tr><td>9</td><td><b>Log &amp; re-score</b></td><td>Record realised excess return vs thesis; update source score &amp; claim-type priors.</td><td>System</td><td>No accountability / learning</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Stages 1–4 are automatable and safe; 5–8 are human-owned judgment with code assistance; 9 is the loop that makes the whole thing compound. The difference between this and your prototype is not the gates — it's stages 1 and 9, the <strong>measured source</strong> and the <strong>closed feedback loop</strong>, which the current sidecar lacks.</p>
+  </section>
+
+  <!-- 10 -->
+  <section id="critique">
+    <div class="eyebrow">10 — Honest appraisal</div>
+    <h2>Critique of thesis-sidecar</h2>
+    <p>You asked me to treat the prototype as inspiration but find it messy and its outputs thin. I agree on both counts, and the reasons are specific and fixable. First, credit where due.</p>
+    <h4>What is genuinely good — keep it</h4>
+    <ul>
+      <li><strong>The Gate 0–5 spine</strong> maps almost exactly onto the validated workflow above (source credibility → claim extraction → fact-check → valuation → technical → falsification). The bones are right.</li>
+      <li><strong>The adversarial-PM judge</strong> is the generator–critic pattern the AI literature endorses, and the eval changelog shows it working — mean report quality climbed 63 → 88 across iterations.</li>
+      <li><strong>Primary-source discipline</strong> ("never present an uncited factual claim as verified") is exactly the right instinct, and rare.</li>
+      <li><strong>Pre-registered falsifiers</strong> (Gate 5) match the pre-mortem evidence.</li>
+    </ul>
+
+    <h4>Why it feels messy and the outputs feel thin — diagnosis</h4>
+    <ul>
+      <li><strong>Schema sprawl.</strong> The changelog shows a new first-class JSON object added almost every iteration — <span class="mono">valuation_bridge</span>, <span class="mono">model_refresh</span>, <span class="mono">metric_snapshot</span>, <span class="mono">risk_premortem</span>, <span class="mono">catalyst_timeline</span>, <span class="mono">industry_structure</span>, <span class="mono">evidence_audit</span>, <span class="mono">variant_view</span>. Each was a reasonable patch, but the sum is a sprawling payload that's hard to hold in your head. That <em>is</em> the messiness.</li>
+      <li><strong>The eval optimised "section presence," not decision usefulness.</strong> Because the judge rewarded the existence of rendered sections, the loop's path of least resistance was to <em>add more sections</em>. The judge even warns about "length padding," yet the incentive gradient pushed toward longer, more templated reports — which is precisely why the outputs feel thin despite being long. Verbosity went up; decisions-per-page did not.</li>
+      <li><strong>One thesis per run, no memory.</strong> Each run is a standalone artefact. There is no portfolio view, no source-level track record accumulating across runs, and — critically — no link from a validated thesis to a sized position to a realised outcome. The system can't learn which sources actually pay.</li>
+      <li><strong>It validates ideas but never closes the loop.</strong> The whole premise is "trusted accounts," yet nothing measures whether a given account's validated theses subsequently made money. Trust stays an input assumption instead of becoming an earned, updated score.</li>
+      <li><strong>Backtest gap.</strong> Your memory notes "no backtest yet." Given the leakage findings (§05), that's almost a feature — but it means conviction is currently un-calibrated. The fix is outcome-logging forward (stage 9), not LLM-judgment backtesting backward.</li>
+    </ul>
+    <div class="box danger">
+      <span class="lbl">The core inversion</span>
+      <p>thesis-sidecar is built as a <strong>report generator</strong> that happens to validate. It should be built as a <strong>decision-and-accountability system</strong> that happens to emit a report. The report is an artefact of the process, not the product. Re-centre on the decision (size or don't, hold how long) and the loop (did it work, re-score the source), and the schema can shrink dramatically.</p>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section id="recommendations">
+    <div class="eyebrow">11 — What to build</div>
+    <h2>Design recommendations</h2>
+    <p>Seven concrete moves for the new system, ordered by leverage.</p>
+
+    <div class="rec">
+      <h4><span class="rn">R1</span> Build the source track-record loop first</h4>
+      <p>Before any new gates, build stage 9 + stage 1: an immutable log that captures each source's dated calls, scores realised benchmark-relative return at a matched horizon, and emits a per-source conviction weight with a confidence interval. This is the thing that operationalises "trusted accounts" and the thing the prototype most lacks.</p>
+      <div class="keep">Keep from sidecar: the tiered watchlist config — but make tier a <em>computed output</em>, not a hand-set input.</div>
+    </div>
+    <div class="rec">
+      <h4><span class="rn">R2</span> Collapse the schema to five first-class objects</h4>
+      <p>Replace the ~8 bolted-on payload objects with: <span class="mono">source</span> (+ live score), <span class="mono">claims[]</span> (typed, with verification verdict + citation), <span class="mono">priced_in</span> (expectations gap), <span class="mono">decision</span> (size, horizon, kill-switches), <span class="mono">outcome</span> (filled later). Everything currently scattered across objects is a field on one of these five.</p>
+      <div class="keep">Keep: claim typing and the citation/evidence discipline — just attach them to <span class="mono">claims[]</span>.</div>
+    </div>
+    <div class="rec">
+      <h4><span class="rn">R3</span> Make verification mechanical with the SAFE/CoVe pattern</h4>
+      <p>Decompose to atomic claims, retrieve per claim, judge support via entailment, and emit a FActScore-style "% of load-bearing claims verified." Surface that number at the top of the report. A thesis below a verification threshold never reaches sizing.</p>
+      <div class="keep">Keep: Gate 1 (extraction) and Gate 2 (fact-check) — this is their mechanised form.</div>
+    </div>
+    <div class="rec">
+      <h4><span class="rn">R4</span> Fix the eval so it rewards decisions, not sections</h4>
+      <p>Re-weight the judge toward decision-usefulness and verified-claim density, and add a hard penalty for length without added decision content (the judge already names this; make it bite). Add a <em>realised-outcome</em> term once stage 9 produces data — the only ungameable score.</p>
+      <div class="keep">Keep: the adversarial-PM judge and negative-control thesis — excellent ideas, just re-pointed.</div>
+    </div>
+    <div class="rec">
+      <h4><span class="rn">R5</span> Make the output decision-first</h4>
+      <p>One screen at the top: verdict (size / starter / wait / pass), conviction weight, % claims verified, the expectations gap, the horizon, and the three kill-switches. Everything else is appendix. This directly answers "outputs not very useful" — a PM should decide in 60 seconds, which is your judge's own bar.</p>
+    </div>
+    <div class="rec">
+      <h4><span class="rn">R6</span> Enforce the LLM/prediction firewall</h4>
+      <p>Codify that LLMs extract, verify and structure; they do <em>not</em> forecast returns, and the system never backtests LLM judgment over the model's training window. Timestamp everything at ingestion to keep retrieval honest. This is your defence against the leakage that invalidates most LLM-trading results.</p>
+    </div>
+    <div class="rec">
+      <h4><span class="rn">R7</span> Size by conviction and hold to horizon</h4>
+      <p>Position size = vol-target × conviction weight (source × verification × expectations gap × narrative-stage). Pre-commit the holding horizon (~10 days+ for thematic) at entry. This is where your documented edge lives, and where copy-trading followers and the original posters both fail.</p>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section id="pitfalls">
+    <div class="eyebrow">12 — Keep these visible</div>
+    <h2>Pitfalls &amp; anti-patterns</h2>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:30%">Anti-pattern</th><th style="width:42%">Why it kills you</th><th style="width:28%">Control</th></tr></thead>
+      <tbody>
+        <tr><td><b>Lookahead / training-cutoff leakage</b></td><td>LLM "predictions" retrieve memorised outcomes; backtests look brilliant, live results don't.<sup><a href="#s-mirage">5</a></sup></td><td>No LLM forecasting; forward outcome-logging only; precise timestamps.</td></tr>
+        <tr><td><b>Hallucinated numbers</b></td><td>A fabricated figure is indistinguishable from a real one and sizes a real trade.</td><td>Citation-or-unverified rule; math in code.</td></tr>
+        <tr><td><b>Survivorship in curation</b></td><td>You track accounts <em>because</em> they were right; the score is a highlight reel.</td><td>Score only post-tracking calls; log misses.</td></tr>
+        <tr><td><b>Following the anti-skilled average</b></td><td>Most posters' bullishness predicts <em>negative</em> retail returns.<sup><a href="#s-finf">8</a></sup></td><td>Evidence-weighted source scores; zero-weight the unproven.</td></tr>
+        <tr><td><b>Right thesis, wrong price</b></td><td>Consensus-correct ideas with no expectations gap don't pay.</td><td>Mandatory priced-in / reverse-DCF gate.</td></tr>
+        <tr><td><b>Under-holding</b></td><td>Narrative edge appears at ~10 days; 1-day holds throw it away.</td><td>Pre-committed horizon per claim type.</td></tr>
+        <tr><td><b>Eval gaming / judge softening</b></td><td>Optimising "section presence" inflates length, not quality.</td><td>Decision-weighted rubric; realised-outcome term.</td></tr>
+        <tr><td><b>Crowding &amp; decay</b></td><td>Sentiment/narrative edges compete away as adoption rises.<sup><a href="#s-llira">1</a></sup></td><td>Narrative-stage check; refuse late/extended setups.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section id="next">
+    <div class="eyebrow">13 — Decisions ahead</div>
+    <h2>What to decide next</h2>
+    <p>To move from review to build, four choices are yours to make:</p>
+    <ul>
+      <li><strong>Source set &amp; cadence.</strong> Which 5–8 accounts make the v1 vetted set, and how often do you ingest? (I'd start narrow and let the track-record loop earn additions.)</li>
+      <li><strong>Horizon policy.</strong> One holding horizon, or per-claim-type horizons? Your 10-day finding argues for a thematic default with catalyst-driven exceptions.</li>
+      <li><strong>Verification depth.</strong> Full per-claim retrieval from day one, or a lighter pass that flags the load-bearing 2–3 claims first? (The latter ships faster.)</li>
+      <li><strong>Outcome capture.</strong> Paper-trade log vs broker integration for stage 9. Even a manual log beats nothing — it's the loop that compounds.</li>
+    </ul>
+    <p>If useful, the natural next deliverable is a tight spec for the new system built on the five-object schema (R2) and the source-score loop (R1) — small enough to actually build, unlike a tenth payload object.</p>
+  </section>
+
+  <hr class="soft">
+
+  <!-- 14 -->
+  <section id="sources">
+    <div class="eyebrow">14 — References</div>
+    <h2>Sources</h2>
+    <div class="src-grid">
+      <h4>AI / agentic pipelines &amp; verification</h4>
+      <ol>
+        <li id="s-llira">Lopez-Lira, A. &amp; Tang, Y. — <em>Can ChatGPT Forecast Stock Price Movements? Return Predictability and Large Language Models</em> (2023, fc. J. Financial Economics). <a href="https://arxiv.org/abs/2304.07619">arxiv.org/abs/2304.07619</a></li>
+        <li id="s-safe">Google DeepMind — <em>Long-form factuality in large language models</em> (SAFE), 2024. <a href="https://deepmind.google/research/publications/85420/">deepmind.google</a> · <a href="https://github.com/google-deepmind/long-form-factuality">code</a></li>
+        <li id="s-cove">Dhuliawala et al. — <em>Chain-of-Verification Reduces Hallucination in LLMs</em> (2023). <a href="https://arxiv.org/pdf/2309.11495">arxiv.org/abs/2309.11495</a></li>
+        <li id="s-products">AlphaSense — <em>AI Tools for Financial Research</em> (2026). <a href="https://www.alpha-sense.com/resources/research-articles/ai-tools-for-financial-research/">alpha-sense.com</a></li>
+        <li id="s-mirage"><em>Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents</em> (2025); incl. FinMem/FinAgent &amp; LiveTradeBench discussion. <a href="https://arxiv.org/html/2510.07920v1">arxiv.org/abs/2510.07920</a> · <a href="https://arxiv.org/html/2412.20138v1">TradingAgents</a></li>
+        <li id="s-forbes">Kauflin, J. — <em>Fintech's Latest Trend: AI Agents For Investment Research</em>, Forbes (Apr 2025). <a href="https://www.forbes.com/sites/jeffkauflin/2025/04/11/fintechs-latest-trend-ai-agents-for-investment-research/">forbes.com</a></li>
+      </ol>
+      <h4>Copy-trading, FinTwit &amp; track records</h4>
+      <ol start="7">
+        <li id="s-etoro">eToro — <em>How CopyTrader works</em> &amp; CFD risk disclosure; copy-trading review. <a href="https://www.etoro.com/copytrader/how-it-works/">etoro.com</a> · <a href="https://www.wallstreetzen.com/blog/etoro-copy-trading-review/">review</a></li>
+        <li id="s-finf">Kakhbod, Kazempour, Livdan et al. — <em>Finfluencers</em> (skilled vs anti-skilled). <a href="https://jhfinance.web.unc.edu/wp-content/uploads/sites/12369/2023/11/Finfluencers.pdf">PDF</a> · <a href="https://www.aeaweb.org/conference/2025/program/paper/i3ry3n4t">AEA 2025</a></li>
+        <li id="s-stwits">Divernois &amp; Filipović — <em>StockTwits Classified Sentiment and Stock Returns</em> (SSRN 3657034). <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3657034">ssrn.com</a></li>
+        <li id="s-tip">TipRanks — <em>How Analysts Are Ranked</em> (3-factor methodology). <a href="https://www.tipranks.com/glossary/h/how-analysts-are-ranked">tipranks.com</a></li>
+      </ol>
+      <h4>Validation discipline &amp; narrative economics</h4>
+      <ol start="11">
+        <li id="s-maub">Mauboussin, M. — <em>Expectations Investing</em> (reverse-DCF) &amp; base-rate work. <a href="https://excessreturnspod.substack.com/p/michael-mauboussin-the-benefits-of">on base rates</a> · <a href="https://speedwellresearch.com/2024/10/03/investing-is-just-answering-a-series-of-questions-explaining-the-reverse-dcf/">reverse DCF</a></li>
+        <li id="s-premortem">Klein, G. — the pre-mortem / prospective hindsight (+~30% reasons identified). <a href="https://www.capitalallocators.com/podcast/conducting-pre-mortem-analysis/">overview</a></li>
+        <li id="s-shiller">Shiller, R. — <em>Narrative Economics</em> (narratives as contagions that move prices).</li>
+        <li id="s-tetlock">Tetlock, P. — <em>Giving Content to Investor Sentiment: The Role of Media in the Stock Market</em>, J. Finance (2007). <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=685145">ssrn.com</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="foot">
+    <p><strong>Method &amp; caveats.</strong> Compiled 30 June 2026 from public research and primary sources, read against your existing thesis-sidecar prototype. Findings on social-sentiment predictability and copy-trading performance are empirical and contested; figures cited (SAFE 72%/76%, FinMem 82%, eToro 51% CFD losses, Lopez-Lira ~90% initial-reaction hit rate) are from the linked sources as of their publication and should be re-checked before they become load-bearing in code. This is a research review, not investment advice.</p>
+  </div>
+
+</div>
+</body>
+</html>
