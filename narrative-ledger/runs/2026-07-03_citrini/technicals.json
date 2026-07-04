@@ -1,10 +1,10 @@
 {
-  "ticker": "VTR",
+  "ticker": "WELL",
   "asof": "2026-07-02",
-  "price": 92.21,
+  "price": 236.06,
   "above_200dma": true,
-  "dist_50dma_pct": 0.0809,
-  "dist_200dma_pct": 0.164,
-  "rsi14": 78.2,
-  "ret_3m_pct": 0.1309
+  "dist_50dma_pct": 0.1061,
+  "dist_200dma_pct": 0.2029,
+  "rsi14": 79.1,
+  "ret_3m_pct": 0.1911
 }

@@ -101,9 +101,15 @@ def main() -> None:
     s.add_argument("--shares", type=float, required=True, help="shares outstanding")
     s.add_argument("--net-debt", type=float, default=0.0)
     s.add_argument("--fcf", type=float, required=True, help="base FCF (same units as price*shares)")
-    s.add_argument("--multiple", type=float, required=True, help="exit EV/FCF multiple")
+    s.add_argument("--multiple", type=float, default=None,
+                   help="exit EV/FCF multiple; omit to use today's implied multiple "
+                        "(code computes it — the agent never does arithmetic)")
     s.add_argument("--years", type=int, default=5)
     s.add_argument("--discount", type=float, default=0.10)
+    s = sub.add_parser("supplement", help="attach an additional public source to a run (paywall fallback)")
+    s.add_argument("run")
+    s.add_argument("--url", required=True)
+    s.add_argument("--note", default="")
     for name in ("validate", "render"):
         sub.add_parser(name).add_argument("run")
     s = sub.add_parser("outcome", help="close a matured call and re-score the source")
@@ -123,15 +129,43 @@ def main() -> None:
         (run_dir / "technicals.json").write_text(json.dumps(t, indent=2))  # provenance
         print(json.dumps(t, indent=2))
     elif a.cmd == "imply":
+        multiple = a.multiple
+        identity = ""
+        if multiple is None:  # code, not the agent, derives the current multiple
+            multiple = round((a.price * a.shares + a.net_debt) / a.fcf, 2)
+            identity = (
+                f"\nnote: exit multiple {multiple}x is TODAY'S implied multiple, so the answer "
+                f"equals the discount rate by construction — read it as: at an unchanged "
+                f"multiple, the price requires ~{a.discount:.0%}/yr growth to earn {a.discount:.0%}/yr."
+            )
         g = expectations.implied_cagr(
-            a.price, a.shares, a.net_debt, a.fcf, a.multiple, a.years, a.discount
+            a.price, a.shares, a.net_debt, a.fcf, multiple, a.years, a.discount
         )
         print(
             expectations.describe(
                 g, price=a.price, shares=a.shares, net_debt=a.net_debt,
-                fcf=a.fcf, exit_multiple=a.multiple, years=a.years, discount=a.discount,
-            )
+                fcf=a.fcf, exit_multiple=multiple, years=a.years, discount=a.discount,
+            ) + identity
         )
+    elif a.cmd == "supplement":
+        run_dir = pathlib.Path(a.run)
+        if not (run_dir / "sources.json").exists():
+            raise SystemExit(f"{a.run} is not a run dir")
+        md = ingest.fetch_post_html(a.url)
+        if not md:
+            raise SystemExit("could not extract article text from that url")
+        import hashlib
+        digest = hashlib.sha256(md.encode()).hexdigest()[:12]
+        n = len(list(run_dir.glob("supplement_*.md"))) + 1
+        now = dt.datetime.now(dt.timezone.utc).isoformat()
+        f = run_dir / f"supplement_{n}.md"
+        f.write_text(f"<!-- {a.url} | retrieved {now} | sha:{digest} | {a.note} -->\n\n{md}")
+        meta = json.loads((run_dir / "sources.json").read_text())
+        meta.setdefault("supplements", []).append(
+            {"url": a.url, "sha": digest, "note": a.note, "retrieved_at": now}
+        )
+        (run_dir / "sources.json").write_text(json.dumps(meta, indent=2))
+        print(f"supplement -> {f.relative_to(ROOT) if f.is_relative_to(ROOT) else f} ({len(md):,} chars)")
     elif a.cmd == "validate":
         p, run_dir = _load_payload(a.run)
         errs = validate_mod.validate(p)  # computes conviction + band inside

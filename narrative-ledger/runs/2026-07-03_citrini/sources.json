@@ -6,5 +6,13 @@
   "title": "Small Themes: June 2026",
   "published_at": "2026-06-24T13:09:19+00:00",
   "content_sha": "64ea3cf6aa77",
-  "evidence": []
+  "evidence": [],
+  "supplements": [
+    {
+      "url": "https://www.aol.com/articles/forget-chips-citrini-research-sees-174508000.html",
+      "sha": "582f90152e86",
+      "note": "Business Insider (AOL syndication) same-day coverage of the paywalled report: names the actual picks (senior living: WELL/BKD/JAN; airlines: UAL/DAL; live events: TKO/CNK/IMAX) and quotes the 80+ demographics passage",
+      "retrieved_at": "2026-07-04T08:11:53.360906+00:00"
+    }
+  ]
 }

@@ -142,7 +142,23 @@ def run(source_id: str) -> pathlib.Path:
     item = max(items, key=lambda i: i["published_at"])  # latest post, chosen by recency
     run_dir = RUNS / f"{dt.date.today().isoformat()}_{source_id}"
     save_artifact(run_dir, item, src)
-    size = len((run_dir / "artifact.md").read_text())
+    text = (run_dir / "artifact.md").read_text()
     print(f"ingested -> {run_dir.relative_to(ROOT)}/artifact.md "
-          f"({size:,} chars, published {item['published_at']})")
+          f"({len(text):,} chars, published {item['published_at']})")
+    if _looks_paywalled(text):
+        print(
+            "WARNING: artifact looks like a PAYWALLED PREVIEW. Do not extract claims from "
+            "a teaser — find the author's own public summary or reputable coverage of the "
+            "same report and attach it:  cli supplement <run> --url <coverage-url>  "
+            "(SKILL.md step 3.0). If none exists, cap the verdict at wait/pass."
+        )
     return run_dir
+
+
+def _looks_paywalled(text: str) -> bool:
+    markers = ("for paid subscribers", "paywall", "Subscribe to keep reading",
+               "Already a paid subscriber", "upgrade to paid")
+    t = text.lower()
+    return any(m.lower() in t for m in markers) or (
+        len(text) < 4000 and "[read more]" in t
+    )
