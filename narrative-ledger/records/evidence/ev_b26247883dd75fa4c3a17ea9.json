@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_b26247883dd75fa4c3a17ea9",
+  "url": "https://www.nic.org/news-press/senior-living-occupancy-grows-amid-construction-slowdown-limiting-options-for-older-adults/",
+  "quote": "Senior housing occupancy gained 0.4 percentage points to 89.5% in the first quarter of 2026, from 89.1% in the last quarter of 2025, according to the National Investment Center for Seniors Housing & Care (NIC) using newly released data from NIC MAP. This is the 19th consecutive quarter of increasing occupancy rates.",
+  "retrieved_at": "2026-07-02T16:46:00Z",
+  "published_at": null,
+  "content_sha256": "370a7c1d3038f14d05110c95cccab37c3a5ef42705163ce20e24353eb3c2cb08",
+  "capture_kind": "quote_only_legacy"
+}

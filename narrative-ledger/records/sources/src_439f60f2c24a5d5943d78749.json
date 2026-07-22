@@ -1,0 +1,19 @@
+{
+  "schema_version": "2.0",
+  "source_id": "src_439f60f2c24a5d5943d78749",
+  "name": "Citrini Research",
+  "venue": "https://www.citriniresearch.com/",
+  "feeds": [
+    "https://www.citriniresearch.com/feed"
+  ],
+  "domains": [
+    "citriniresearch.com"
+  ],
+  "declared_scopes": [],
+  "qualification_status": "probationary",
+  "qualification_evidence_ids": [],
+  "assessor": null,
+  "assessment_method": "v1_migration",
+  "assessed_at": null,
+  "review_due_at": null
+}

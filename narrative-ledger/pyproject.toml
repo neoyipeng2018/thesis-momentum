@@ -1,23 +1,35 @@
 [project]
 name = "narrative-ledger"
-version = "0.1.0"
-description = "A skill-driven accountability engine for borrowed macro/thematic theses. Code owns the math; the agent owns the judgment; a JSON contract and an outcome loop keep both honest."
+version = "2.0.0"
+description = "A source-to-candidate research workflow for independently validating public market theses."
 requires-python = ">=3.10"
 dependencies = [
     "pydantic>=2",
-    "feedparser",
-    "atproto",
-    "yfinance>=1.5",
-    "pandas",
     "jinja2",
-    "markdownify",
-    "trafilatura",
-    "tldextract",
     "pyyaml",
 ]
 
+[project.scripts]
+ledger = "ledger.cli:main"
+
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = [
+    "mypy",
+    "pytest",
+    "types-Jinja2",
+    "types-PyYAML",
+]
+
+[tool.setuptools]
+packages = ["ledger"]
+
+[tool.setuptools.package-data]
+ledger = ["templates/*.j2"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["ledger", "tests"]

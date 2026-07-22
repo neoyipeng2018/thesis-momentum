@@ -1,75 +1,170 @@
 # narrative-ledger
 
-A skill-driven accountability engine for borrowed macro/thematic theses.
-Deterministic Python owns feeds, market data, the expectations math, scoring,
-validation and rendering; the reasoning agent owns extraction, verification and
-judgment; a versioned JSON payload is the only interface between them, and an
-outcome loop re-scores every source on realised, benchmark-relative returns.
+`narrative-ledger` is a source-to-candidate research workflow. It discovers and
+manually qualifies credible public research sources, captures their work,
+independently underwrites a thesis, and stops at a
+`validated_trade_candidate`.
 
-Built from `../plan_build_v1.html` (v1.1), which is derived from
-`../research_review.html`. Read those for the why; this README is the how.
+The v2 product is research only. It does not size, allocate, execute, or manage
+positions.
 
-## Run a report
+## Workflow
 
-```bash
-cd narrative-ledger
-python -m ledger.cli ingest --source citrini     # latest post -> runs/<date>_citrini/
-python -m ledger.cli new    --source citrini     # scaffold payload.json + source score
-# ... agent fills payload.json per SKILL.md (claims -> verify -> priced_in -> decision),
-#     calling `technicals` and `imply` along the way ...
-python -m ledger.cli validate runs/<date>_citrini   # the gate; on pass, code logs the call
-python -m ledger.cli render   runs/<date>_citrini   # decision-first report.html
+```text
+scout -> explicit qualification seam -> scan -> underwrite -> check
+                                                        |-> refusal or watch
+                                                        `-> publishable result
+                                                              |
+                                                        explicit publish
+                                                              |
+                                                        candidate -> report
 ```
 
-Later, when the call matures (T + horizon_sessions):
+The five router modes are:
+
+| Mode | Result |
+| --- | --- |
+| `scout` | Qualification state for the stored source profiles |
+| `scan` | `episodes_captured` or `no_episodes_captured` for a qualified-source window |
+| `underwrite` | A deterministic check result for one stored research case |
+| `monitor` | Current, refresh-due, expired, or fail-closed candidate status |
+| `full` | `scout`, `scan`, then `underwrite`, stopping at the first terminal state |
+
+Router modes are read-only. They do not qualify a source, capture a new episode,
+publish a candidate, or adjudicate new monitoring evidence.
+
+## CLI
+
+Install the package and run the deterministic seams from this directory:
 
 ```bash
-python -m ledger.cli outcome runs/<date>_citrini    # realised excess; re-scores the source
-python -m ledger.cli score                          # per-source weight/status/discrimination
-python -m ledger.cli watch                          # open calls + kill-switch dates due
+python -m pip install -e '.[dev]'
+ledger scout
+ledger scan \
+  --start 2026-07-01T00:00:00Z \
+  --end 2026-07-22T00:00:00Z \
+  --as-of 2026-07-22T00:00:00Z
+ledger underwrite records/research/<case-id>.json
+ledger check records/research/<case-id>.json
+ledger publish-candidate records/research/<case-id>.json \
+  --expect-digest <digest-from-check> \
+  --published-at 2026-07-22T12:00:00Z
+ledger monitor --as-of 2026-07-22T13:00:00Z
+ledger candidates --as-of 2026-07-22T13:00:00Z
+ledger render-candidate records/candidates/<candidate-id>.json \
+  --output reports/<candidate-id>.html
 ```
 
-## Conventions that keep the ledger honest
+`full` also requires a case plus `--start`, `--end`, and `--as-of`. None of the
+router commands publishes a candidate. Only `publish-candidate` writes a
+candidate record, and it refuses a stale check digest.
 
-- **Entry timing**: outcomes enter at the first close on a session *after* the
-  publish date — a source never gets credit for a close that predates its post.
-- **Horizons are trading sessions**, pre-committed at entry (default 10).
-- **Every verdict is logged**, `wait`/`pass` included, and shadow-scored: the
-  `discrimination` stat = mean(acted excess) − mean(declined excess) grades the
-  gate itself against blindly following the feed.
-- **Survivorship**: only calls logged on their public date, after tracking
-  began, enter the file. `runs/` and `ledger/calls.csv` are committed to git —
-  history is the tamper-evident append-only guarantee.
-- **First-run caveat**: a first run on an older post is selected by recency,
-  but any verdict formed after the fact can see what prices did since publish.
-  Honest datapoints accrue from calls logged on (or near) their publish date
-  going forward; treat backfilled outcomes as demo data, not evidence.
-- **Only code writes `ledger/calls.csv`** (append-only, idempotent by run_id).
-  The agent never touches the ledger, `conviction`, `size_frac`, or `outcome`.
+## Domain records
 
-## Skill install
+- `SourceProfile` stores identity, venue, feeds, domains, declared scopes, and
+  explicit qualification metadata.
+- `ResearchEpisode` stores one content-hashed artifact with publication and
+  retrieval times, completeness, attribution quality, and supplement evidence
+  IDs.
+- `EvidenceCapture` stores a quote, URL, timestamps, content hash, and one of
+  `primary`, `secondary`, or `quote_only_legacy`.
+- `ResearchCase` stores fresh underwriting, one disposition, and its reason.
+- `CheckResult` is a pure deterministic result with issues and a content digest.
+- `ValidatedCandidate` is the sole successful published endpoint and persists
+  the scope in which its source was qualified.
 
-`SKILL.md` + `references/` are the agent's half. Point your agent runtime at the
-repo (run in-repo), or copy/symlink the folder into your skills directory.
+Every assertion retains provenance as `stated`, `inferred`, `assumed`, or
+`missing`. A researcher may propose an expression, but it is labelled
+`researcher` and never attributed to the source.
 
-## Watchlist maintenance
+## Qualification is manual
 
-`config/watchlist.yaml`. Kinds: `rss` (WordPress + Substack; set
-`fetch_full: true` for excerpt-only feeds — Lyn Alden's is), `bluesky`
-(unauthenticated public AppView, no credentials), `manual` (X: paste into
-`runs/<date>_<id>/artifact.md` + write `sources.json`).
+Every migrated source starts `probationary`. A source becomes `qualified` only
+through an explicit user decision backed by qualification evidence, one or more
+declared scopes, an assessor, an assessment method, `assessed_at`, and a future
+`review_due_at`. Every qualification capture must have been retrieved by
+`assessed_at`. Direct underwriting cannot bypass this seam.
 
-Tier/status is **computed** from outcomes, never hand-set.
+Automated source scoring is outside v2. Popularity, follower count, and a curated
+list of past wins are not qualification evidence by themselves.
 
-## Tests
+## Checking and publication
+
+Checking and publication are separate:
+
+1. `check` evaluates the source profile, episode, referenced evidence, and
+   research case without writing anything. It returns the case disposition,
+   issues, checker version, publishability, and a digest.
+2. A candidate can pass only from a currently qualified source and an in-scope
+   episode whose `completeness` is `full` and whose `attribution_quality` is not
+   `reconstructed`.
+3. `publish-candidate` requires the exact digest. Edited inputs make the digest
+   stale. It also rechecks source qualification, candidate scope, catalyst,
+   invalidators, and any dated expression horizon at publication time;
+   publication must be no earlier than the case `as_of` and earlier than
+   `valid_until`. Repeat publication returns the existing candidate unchanged.
+4. Candidate HTML renders only from a published `ValidatedCandidate`, using the
+   template packaged inside the installed `ledger` package.
+
+All text that a candidate can expose, including source quotes and referenced
+evidence quotes, is rejected when it contains allocation, order-execution,
+conviction-sizing, or position-management instructions.
+
+The research dispositions are `unscorable`, `no_actionable_thesis`,
+`insufficient_material`, `reject`, `watch`, and
+`validated_trade_candidate`. Empty candidate output is a valid result.
+
+## Migration and fresh start
+
+The v2 cutover preserves only raw research material:
+
+- original artifacts, supplements, URLs, hashes, and source timestamps;
+- legacy evidence quotes, URLs, and retrieval timestamps, marked
+  `quote_only_legacy` and left unadjudicated;
+- real source identities and feeds, imported as probationary profiles.
+
+Migrated episodes are deliberately `completeness: unknown` and
+`attribution_quality: direct`. They cannot pass the candidate gate until fresh
+research establishes a complete artifact. Prior claims, judgments, scores,
+candidate states, technical snapshots, and generated reports are discarded.
 
 ```bash
-python -m pytest tests/ -q
+ledger migrate-v2          # dry run: print status, digest, and actions
+ledger migrate-v2 --apply  # write verified v2 records and delete v1 derived files
+ledger fresh-start         # dry run: list derived v2 records and reports to clear
+ledger fresh-start --apply
 ```
 
-Firewall rules (plan §01 ①–⑥), the verdict band, sizing caps, Wilson/shrink
-math, shadow-scoring, entry-timing leakage guard, and `implied_cagr` are all
-unit-tested.
+Migration is deterministic and leaves original raw run files unchanged. The
+manifest temporarily records `migration_partial` while derived v1 deletion is
+pending, finishes as `migration_complete`, and fails closed with
+`migration_blocked_integrity_error` on an integrity conflict. See
+`references/migration.md` for the exact policy.
+
+## Skill files
+
+`SKILL.md` contains routing, shared invariants, and completion criteria.
+Mode-specific procedures live in `references/`:
+
+- `source_qualification.md`
+- `signal_capture.md`
+- `underwriting.md`
+- `candidate_gate.md`
+- `monitoring.md`
+- `migration.md`
+- `contracts.md`
+
+## Verification
+
+```bash
+python -m mypy
+python -m pytest tests -q
+```
+
+The suite covers qualification and temporal gates, episode completeness and
+attribution, checker purity, digest locality, stale publication,
+atomic/idempotent writes, candidate-only rendering, router stops, deterministic
+migration, interrupted migration recovery, and repeatable fresh starts.
 
 ---
 

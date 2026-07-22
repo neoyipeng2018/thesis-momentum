@@ -1,209 +1,355 @@
-"""Orchestrator (plan §5.7). The agent calls these between its cognitive steps.
-
-ingest | new | technicals | imply | validate | render | outcome | score | watch
-
-The ledger write lives inside the validate-pass path, in code, never in the
-agent's hands (firewall 5).
-"""
 from __future__ import annotations
 
 import argparse
-import datetime as dt
-import json
-import pathlib
+import sys
+from collections.abc import Sequence
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Protocol, cast
 
-from . import expectations, ingest, marketdata, render, trackrecord, validate as validate_mod
-from .models import Payload
+from pydantic import TypeAdapter
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-RUNS = ROOT / "runs"
+from .candidates import (
+    CandidatePublicationError,
+    active_candidates,
+    list_candidates,
+    publish_candidate,
+)
+from .check import check_case
+from .migrate import MigrationConflictError, fresh_start, migrate_v1
+from .models import (
+    CheckResult,
+    EvidenceCapture,
+    ResearchCase,
+    ResearchEpisode,
+    SourceProfile,
+    ValidatedCandidate,
+    research_episodes_by_id,
+    source_profiles_by_id,
+)
+from .render import render_candidate
+from .router import ModeResult, full, monitor, scan, scout, underwrite
+from .storage import load_model, load_models
 
 
-def _latest_run_dir(source_id: str) -> pathlib.Path:
-    dirs = sorted(RUNS.glob(f"*_{source_id}"))
-    if not dirs:
-        raise SystemExit(f"no runs for '{source_id}' — run `ingest --source {source_id}` first")
-    return dirs[-1]
+ROOT = Path(__file__).resolve().parent.parent
 
 
-def _load_payload(run: str) -> tuple[Payload, pathlib.Path]:
-    run_dir = pathlib.Path(run)
-    if not run_dir.exists():
-        run_dir = ROOT / run
-    f = run_dir / "payload.json"
-    if not f.exists():
-        raise SystemExit(f"{f} not found")
-    return Payload.model_validate_json(f.read_text()), run_dir
+class _BaseArgs(Protocol):
+    command: str
+    root: Path
 
 
-def scaffold(source_id: str) -> None:
-    run_dir = _latest_run_dir(source_id)
-    src_meta = json.loads((run_dir / "sources.json").read_text())
-    wl = ingest.load_watchlist()
-    defaults = wl["defaults"]
-    tr = trackrecord.track_record_for(source_id)
-    payload = {
-        "schema_version": "1.0",
-        "run_id": run_dir.name,
-        "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "source": {
-            "id": source_id,
-            "name": src_meta.get("source_name", source_id),
-            "venue": src_meta.get("venue"),
-            "artifact_url": src_meta["artifact_url"],
-            "published_at": src_meta["published_at"],
-            "track_record": tr.model_dump(),
-        },
-        "claims": [],
-        "priced_in": {
-            "ticker": "",
-            "expectations_summary": "",
-            "variant_view": "",
-            "inputs": [],
-            "gap_score": 0.0,
-            "narrative_stage": "early",
-        },
-        "decision": {
-            "verdict": "wait",
-            "ticker": "",
-            "direction": "long",
-            "horizon_sessions": defaults.get("horizon_sessions", 10),
-            "kill_switches": [],
-            "conviction": None,
-            "size_frac": None,
-        },
-        "outcome": {},
-        "forecast": None,
+class _CaseArgs(_BaseArgs, Protocol):
+    case: Path
+
+
+class _PublishArgs(_CaseArgs, Protocol):
+    expect_digest: str
+    published_at: datetime
+
+
+class _RenderArgs(_BaseArgs, Protocol):
+    candidate: Path
+    output: Path
+
+
+class _AsOfArgs(_BaseArgs, Protocol):
+    as_of: datetime
+
+
+class _WindowArgs(_AsOfArgs, Protocol):
+    start: datetime
+    end: datetime
+
+
+class _FullArgs(_WindowArgs, _CaseArgs, Protocol):
+    pass
+
+
+class _ApplyArgs(_BaseArgs, Protocol):
+    apply: bool
+
+
+@dataclass(frozen=True)
+class _CaseContext:
+    case: ResearchCase
+    profile: SourceProfile
+    episode: ResearchEpisode
+    evidence: tuple[EvidenceCapture, ...]
+
+
+def _timestamp(value: str) -> datetime:
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.utcoffset() is None:
+        raise argparse.ArgumentTypeError("timestamp must include a UTC offset")
+    return parsed
+
+
+def _parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(prog="ledger")
+    parser.add_argument("--root", type=Path, default=ROOT)
+    commands = parser.add_subparsers(dest="command", required=True)
+
+    check_parser = commands.add_parser("check")
+    check_parser.add_argument("case", type=Path)
+
+    publish = commands.add_parser("publish-candidate")
+    publish.add_argument("case", type=Path)
+    publish.add_argument("--expect-digest", required=True)
+    publish.add_argument("--published-at", type=_timestamp, required=True)
+
+    report = commands.add_parser("render-candidate")
+    report.add_argument("candidate", type=Path)
+    report.add_argument("--output", type=Path, required=True)
+
+    candidates = commands.add_parser("candidates")
+    candidates.add_argument(
+        "--as-of", type=_timestamp, default=datetime.now(timezone.utc)
+    )
+
+    commands.add_parser("scout")
+
+    scan_parser = commands.add_parser("scan")
+    _window_arguments(scan_parser)
+
+    underwrite_parser = commands.add_parser("underwrite")
+    underwrite_parser.add_argument("case", type=Path)
+
+    monitor_parser = commands.add_parser("monitor")
+    monitor_parser.add_argument(
+        "--as-of", type=_timestamp, default=datetime.now(timezone.utc)
+    )
+
+    full_parser = commands.add_parser("full")
+    full_parser.add_argument("case", type=Path)
+    _window_arguments(full_parser)
+
+    migration = commands.add_parser("migrate-v2")
+    migration.add_argument("--apply", action="store_true")
+
+    reset = commands.add_parser("fresh-start")
+    reset.add_argument("--apply", action="store_true")
+    return parser
+
+
+def _window_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--start", type=_timestamp, required=True)
+    parser.add_argument("--end", type=_timestamp, required=True)
+    parser.add_argument("--as-of", type=_timestamp, required=True)
+
+
+def _record_path(path: Path, root: Path, directory: str) -> Path:
+    if path.is_file():
+        return path
+    relative = root / path
+    if relative.is_file():
+        return relative
+    name = path.name if path.suffix == ".json" else f"{path.name}.json"
+    candidate = root / "records" / directory / name
+    if candidate.is_file():
+        return candidate
+    raise FileNotFoundError(path)
+
+
+def _case_context(root: Path, path: Path) -> _CaseContext:
+    records = root / "records"
+    case = load_model(_record_path(path, root, "research"), ResearchCase)
+    profiles = load_models(records / "sources", SourceProfile)
+    episodes = load_models(records / "episodes", ResearchEpisode)
+    profile = source_profiles_by_id(profiles).get(case.source_id)
+    episode = research_episodes_by_id(episodes).get(case.episode_id)
+    if profile is None:
+        raise ValueError(f"source profile not found: {case.source_id}")
+    if episode is None:
+        raise ValueError(f"research episode not found: {case.episode_id}")
+    evidence = load_models(records / "evidence", EvidenceCapture)
+    return _CaseContext(case, profile, episode, evidence)
+
+
+def _mode_json(result: ModeResult) -> str:
+    adapter = TypeAdapter(ModeResult)
+    return adapter.dump_json(result, indent=2).decode()
+
+
+def _candidate_json(candidates: tuple[ValidatedCandidate, ...]) -> str:
+    adapter = TypeAdapter(tuple[ValidatedCandidate, ...])
+    return adapter.dump_json(candidates, indent=2).decode()
+
+
+def _check_command(args: _CaseArgs) -> int:
+    context = _case_context(args.root, args.case)
+    result = check_case(
+        context.case, context.profile, context.episode, context.evidence
+    )
+    print(result.model_dump_json(indent=2))
+    return 0 if result.valid else 2
+
+
+def _publish_command(args: _PublishArgs) -> int:
+    context = _case_context(args.root, args.case)
+    result = publish_candidate(
+        context.case,
+        context.profile,
+        context.episode,
+        context.evidence,
+        args.expect_digest,
+        args.published_at,
+        args.root / "records" / "candidates",
+    )
+    print(result.candidate.model_dump_json(indent=2))
+    print(f"created={str(result.created).lower()} path={result.path}")
+    return 0
+
+
+def _render_command(args: _RenderArgs) -> int:
+    records = args.root / "records"
+    root = args.root.resolve()
+    output = args.output if args.output.is_absolute() else root / args.output
+    output = output.resolve()
+    allowed_directories = {
+        (root / "reports").resolve(),
+        (root / "records" / "reports").resolve(),
     }
-    out = run_dir / "payload.json"
-    if out.exists():
-        raise SystemExit(f"{out} already exists — refusing to overwrite a run")
-    out.write_text(json.dumps(payload, indent=2))
-    print(f"scaffolded -> {out.relative_to(ROOT)}")
-    print(f"source score: weight={tr.source_weight} status={tr.status} "
-          f"(n_matured={tr.n_calls})")
-    print("next: agent fills claims / priced_in / decision per SKILL.md, "
-          "then `validate`, then `render`")
+    if output.suffix != ".html" or output.parent not in allowed_directories:
+        raise ValueError(
+            "candidate report output must be a flat HTML file in reports/ "
+            "or records/reports/"
+        )
+    candidate = load_model(
+        _record_path(args.candidate, args.root, "candidates"), ValidatedCandidate
+    )
+    profiles = load_models(records / "sources", SourceProfile)
+    profile = source_profiles_by_id(profiles).get(candidate.source_id)
+    if profile is None:
+        raise ValueError(f"source profile not found: {candidate.source_id}")
+    evidence = load_models(records / "evidence", EvidenceCapture)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    render_candidate(candidate, profile, evidence, output)
+    print(output)
+    return 0
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser(prog="ledger")
-    sub = ap.add_subparsers(dest="cmd", required=True)
-    s = sub.add_parser("ingest", help="pull latest post -> runs/<date>_<id>/")
-    s.add_argument("--source", required=True)
-    s = sub.add_parser("new", help="scaffold payload.json (+ source score)")
-    s.add_argument("--source", required=True)
-    s = sub.add_parser("technicals", help="stage/extension read for the extracted ticker")
-    s.add_argument("run")
-    s.add_argument("--ticker", required=True)
-    s = sub.add_parser("imply", help="reverse-DCF: implied FCF CAGR from cited inputs")
-    s.add_argument("--price", type=float, required=True)
-    s.add_argument("--shares", type=float, required=True, help="shares outstanding")
-    s.add_argument("--net-debt", type=float, default=0.0)
-    s.add_argument("--fcf", type=float, required=True, help="base FCF (same units as price*shares)")
-    s.add_argument("--multiple", type=float, default=None,
-                   help="exit EV/FCF multiple; omit to use today's implied multiple "
-                        "(code computes it — the agent never does arithmetic)")
-    s.add_argument("--years", type=int, default=5)
-    s.add_argument("--discount", type=float, default=0.10)
-    s = sub.add_parser("supplement", help="attach an additional public source to a run (paywall fallback)")
-    s.add_argument("run")
-    s.add_argument("--url", required=True)
-    s.add_argument("--note", default="")
-    for name in ("validate", "render"):
-        sub.add_parser(name).add_argument("run")
-    s = sub.add_parser("outcome", help="close a matured call and re-score the source")
-    s.add_argument("run")
-    s.add_argument("--kill-switch", default=None, help="condition text if a kill-switch forced the exit")
-    sub.add_parser("score", help="per-source table incl. discrimination")
-    sub.add_parser("watch", help="open calls + kill-switch dates coming due")
-    a = ap.parse_args()
+def _candidates_command(args: _AsOfArgs) -> int:
+    records = args.root / "records"
+    candidates = list_candidates(records / "candidates")
+    profiles = load_models(records / "sources", SourceProfile)
+    print(_candidate_json(active_candidates(candidates, profiles, args.as_of)))
+    return 0
 
-    if a.cmd == "ingest":
-        ingest.run(a.source)
-    elif a.cmd == "new":
-        scaffold(a.source)
-    elif a.cmd == "technicals":
-        t = marketdata.technicals(a.ticker)
-        run_dir = pathlib.Path(a.run)
-        (run_dir / "technicals.json").write_text(json.dumps(t, indent=2))  # provenance
-        print(json.dumps(t, indent=2))
-    elif a.cmd == "imply":
-        multiple = a.multiple
-        identity = ""
-        if multiple is None:  # code, not the agent, derives the current multiple
-            multiple = round((a.price * a.shares + a.net_debt) / a.fcf, 2)
-            identity = (
-                f"\nnote: exit multiple {multiple}x is TODAY'S implied multiple, so the answer "
-                f"equals the discount rate by construction — read it as: at an unchanged "
-                f"multiple, the price requires ~{a.discount:.0%}/yr growth to earn {a.discount:.0%}/yr."
+
+def _scout_command(args: _BaseArgs) -> int:
+    profiles = load_models(args.root / "records" / "sources", SourceProfile)
+    print(_mode_json(scout(profiles)))
+    return 0
+
+
+def _scan_command(args: _WindowArgs) -> int:
+    records = args.root / "records"
+    profiles = load_models(records / "sources", SourceProfile)
+    episodes = load_models(records / "episodes", ResearchEpisode)
+    print(_mode_json(scan(profiles, episodes, args.start, args.end, args.as_of)))
+    return 0
+
+
+def _underwrite_command(args: _CaseArgs) -> int:
+    context = _case_context(args.root, args.case)
+    print(
+        _mode_json(
+            underwrite(
+                context.case, context.profile, context.episode, context.evidence
             )
-        g = expectations.implied_cagr(
-            a.price, a.shares, a.net_debt, a.fcf, multiple, a.years, a.discount
         )
-        print(
-            expectations.describe(
-                g, price=a.price, shares=a.shares, net_debt=a.net_debt,
-                fcf=a.fcf, exit_multiple=multiple, years=a.years, discount=a.discount,
-            ) + identity
+    )
+    return 0
+
+
+def _monitor_command(args: _AsOfArgs) -> int:
+    records = args.root / "records"
+    candidates = list_candidates(records / "candidates")
+    profiles = load_models(records / "sources", SourceProfile)
+    print(_mode_json(monitor(candidates, profiles, args.as_of)))
+    return 0
+
+
+def _full_command(args: _FullArgs) -> int:
+    records = args.root / "records"
+    case = load_model(_record_path(args.case, args.root, "research"), ResearchCase)
+    profiles = load_models(records / "sources", SourceProfile)
+    episodes = load_models(records / "episodes", ResearchEpisode)
+    evidence = load_models(records / "evidence", EvidenceCapture)
+    print(
+        _mode_json(
+            full(
+                profiles,
+                episodes,
+                case,
+                evidence,
+                args.start,
+                args.end,
+                args.as_of,
+            )
         )
-    elif a.cmd == "supplement":
-        run_dir = pathlib.Path(a.run)
-        if not (run_dir / "sources.json").exists():
-            raise SystemExit(f"{a.run} is not a run dir")
-        md = ingest.fetch_post_html(a.url)
-        if not md:
-            raise SystemExit("could not extract article text from that url")
-        import hashlib
-        digest = hashlib.sha256(md.encode()).hexdigest()[:12]
-        n = len(list(run_dir.glob("supplement_*.md"))) + 1
-        now = dt.datetime.now(dt.timezone.utc).isoformat()
-        f = run_dir / f"supplement_{n}.md"
-        f.write_text(f"<!-- {a.url} | retrieved {now} | sha:{digest} | {a.note} -->\n\n{md}")
-        meta = json.loads((run_dir / "sources.json").read_text())
-        meta.setdefault("supplements", []).append(
-            {"url": a.url, "sha": digest, "note": a.note, "retrieved_at": now}
-        )
-        (run_dir / "sources.json").write_text(json.dumps(meta, indent=2))
-        print(f"supplement -> {f.relative_to(ROOT) if f.is_relative_to(ROOT) else f} ({len(md):,} chars)")
-    elif a.cmd == "validate":
-        p, run_dir = _load_payload(a.run)
-        errs = validate_mod.validate(p)  # computes conviction + band inside
-        if errs:
-            print("GATE FAILED:")
-            print("\n".join(f"  - {e}" for e in errs))
-            raise SystemExit(1)
-        (run_dir / "payload.json").write_text(p.model_dump_json(indent=2))
-        wrote = trackrecord.append_call(p)  # CODE writes calls.csv — firewall 5
-        print("OK — payload passes the gate")
-        print(f"conviction={p.decision.conviction} size_frac={p.decision.size_frac} "
-              f"verdict={p.decision.verdict}")
-        print("call logged to ledger/calls.csv" if wrote else "call already logged (idempotent)")
-    elif a.cmd == "render":
-        p, run_dir = _load_payload(a.run)
-        out = run_dir / "report.html"
-        render.render(p, out)
-        print(f"report -> {out}")
-    elif a.cmd == "outcome":
-        trackrecord.close_and_rescore(a.run, a.kill_switch)
-    elif a.cmd == "score":
-        rows = trackrecord._rows()
-        ids = sorted({r["source_id"] for r in rows})
-        if not ids:
-            print("no calls logged yet")
-        for i in ids:
-            s = trackrecord.score_source(i)
-            print(json.dumps(s))
-    elif a.cmd == "watch":
-        calls = trackrecord.open_calls()
-        if not calls:
-            print("no open calls")
-        for c in calls:
-            print(f"{c['run_id']}: {c['verdict']} {c['direction']} {c['ticker']} "
-                  f"(published {c['published_at']}, horizon {c['horizon_sessions']} sess)")
-            for k in c["kill_switches"]:
-                print(f"    kill-switch: {k}")
+    )
+    return 0
+
+
+def _migration_command(args: _ApplyArgs) -> int:
+    result = migrate_v1(args.root, dry_run=not args.apply)
+    mode = "applied" if args.apply else "dry-run"
+    print(
+        f"{result.status} mode={mode} sources={len(result.source_ids)} "
+        f"episodes={result.episode_count} evidence={result.evidence_count} "
+        f"manifest={result.manifest_sha256}"
+    )
+    for action in result.actions:
+        print(f"{action.kind}\t{action.source or '-'}\t{action.target or '-'}")
+    return 0
+
+
+def _reset_command(args: _ApplyArgs) -> int:
+    result = fresh_start(args.root, dry_run=not args.apply)
+    mode = "applied" if args.apply else "dry-run"
+    print(f"fresh_start_complete mode={mode} removed={len(result.removed)}")
+    for path in result.removed:
+        print(path)
+    return 0
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parsed = cast(_BaseArgs, _parser().parse_args(argv))
+    try:
+        if parsed.command == "check":
+            return _check_command(cast(_CaseArgs, parsed))
+        if parsed.command == "publish-candidate":
+            return _publish_command(cast(_PublishArgs, parsed))
+        if parsed.command == "render-candidate":
+            return _render_command(cast(_RenderArgs, parsed))
+        if parsed.command == "candidates":
+            return _candidates_command(cast(_AsOfArgs, parsed))
+        if parsed.command == "scout":
+            return _scout_command(parsed)
+        if parsed.command == "scan":
+            return _scan_command(cast(_WindowArgs, parsed))
+        if parsed.command == "underwrite":
+            return _underwrite_command(cast(_CaseArgs, parsed))
+        if parsed.command == "monitor":
+            return _monitor_command(cast(_AsOfArgs, parsed))
+        if parsed.command == "full":
+            return _full_command(cast(_FullArgs, parsed))
+        if parsed.command == "migrate-v2":
+            return _migration_command(cast(_ApplyArgs, parsed))
+        if parsed.command == "fresh-start":
+            return _reset_command(cast(_ApplyArgs, parsed))
+        raise ValueError(f"unknown command: {parsed.command}")
+    except MigrationConflictError as error:
+        print(error.manifest_json, file=sys.stderr, end="")
+        return 2
+    except (CandidatePublicationError, OSError, ValueError) as error:
+        print(f"error: {error}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

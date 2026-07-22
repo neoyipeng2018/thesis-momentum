@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_11a8280f9079d81e400bd959",
+  "url": "https://www.sec.gov/Archives/edgar/data/766704/000076670426000018/a1q26earningsrelease991.htm",
+  "quote": "We also increased the guidance range of full year normalized FFO attributable to common stockholders to a range of $6.21 to $6.35 per diluted share from the previous range of $6.09 to $6.25.",
+  "retrieved_at": "2026-07-04T08:08:00Z",
+  "published_at": null,
+  "content_sha256": "88d95249039cb25b3d1cb6eac2d2fd9020864be42163b9bc9196c248be2e8802",
+  "capture_kind": "quote_only_legacy"
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_ca98f552cbc52d5bba9bfac3",
+  "url": "https://data.sec.gov/api/xbrl/companyconcept/CIK0000766704/dei/EntityCommonStockSharesOutstanding.json",
+  "quote": "\"end\":\"2026-04-24\",\"val\":705914450",
+  "retrieved_at": "2026-07-04T08:02:00Z",
+  "published_at": null,
+  "content_sha256": "40a13cdf86141946ea5b46b1f42eecfec9279d9d91110a2ea061be4d08157d7f",
+  "capture_kind": "quote_only_legacy"
+}

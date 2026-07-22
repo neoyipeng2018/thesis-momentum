@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_bb3d2238ff4dfc1b2d2430d8",
+  "url": "https://www.sec.gov/Archives/edgar/data/740260/000074026026000016/q12026earningsrelease.htm",
+  "quote": "As the nearly 70 million Baby Boomers begin turning 80 in 2026, we expect durable demand for our attractive senior housing communities located in favorable markets to increase",
+  "retrieved_at": "2026-07-02T16:53:00Z",
+  "published_at": null,
+  "content_sha256": "3e3a2d904adbaba393fcc784db8e07c59620b2a153626c60394d454c4cec2c43",
+  "capture_kind": "quote_only_legacy"
+}

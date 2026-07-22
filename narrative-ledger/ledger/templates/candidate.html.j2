@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ candidate.instrument }} · validated trade candidate</title>
+<style>
+  :root{--paper:#f6f3ec;--card:#fbf9f4;--ink:#211d18;--soft:#575046;--muted:#756c60;--rule:#d8cfbf;--accent:#8c2f24;--blue:#31566a;--green:#3f6b4f;--chip:#eee8dc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--serif:Georgia,"Times New Roman",serif;--mono:"SFMono-Regular",Consolas,monospace}
+  *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.58 var(--serif)}main{max-width:920px;margin:auto;padding:42px 28px 90px}
+  header{border-bottom:2px solid var(--ink);padding-bottom:20px}.kicker,.label{font:700 10.5px/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}h1{font-size:36px;line-height:1.12;margin:10px 0}.dek{font-size:19px;color:var(--soft);margin:0}
+  .meta{display:flex;gap:7px 22px;flex-wrap:wrap;margin-top:15px;font:12.5px var(--sans);color:var(--muted)}.meta b{color:var(--soft)}
+  .notice{margin:22px 0;background:#e8eee9;border:1px solid #cbd9cd;border-left:5px solid var(--green);border-radius:9px;padding:14px 18px;font:14px/1.5 var(--sans)}
+  .strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--ink);border-radius:9px;overflow:hidden;margin:22px 0}.cell{background:var(--card);padding:12px 14px;border-right:1px solid var(--rule)}.cell:last-child{border:0}.value{font-weight:700;font-size:18px;margin-top:3px}.sub{font:11.5px/1.4 var(--sans);color:var(--muted);margin-top:3px}
+  section{margin:36px 0}h2{font-size:22px;margin:0 0 11px;border-bottom:1px solid var(--rule);padding-bottom:7px}h3{font-size:17px;margin:22px 0 6px}p{margin:0 0 13px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{background:var(--card);border:1px solid var(--rule);border-radius:9px;padding:16px 18px}.card p:last-child{margin:0}
+  ul{padding-left:22px}.trigger{margin:10px 0}.due{font:12px var(--mono);background:var(--chip);border-radius:4px;padding:2px 5px}
+  table{width:100%;border-collapse:collapse;font:13px/1.45 var(--sans)}th,td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:1px solid var(--rule)}th{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;background:var(--chip)}
+  a{color:var(--accent)}blockquote{margin:5px 0;padding-left:10px;border-left:3px solid var(--rule);color:var(--soft);font-style:italic}.pill{display:inline-block;border-radius:20px;background:var(--chip);padding:2px 8px;font:700 10px var(--sans);letter-spacing:.04em;text-transform:uppercase}
+  details{border:1px solid var(--rule);border-radius:9px;background:var(--card);margin:12px 0}summary{cursor:pointer;padding:12px 16px;font:700 13px var(--sans)}.inside{border-top:1px solid var(--rule);padding:12px 16px}.foot{border-top:2px solid var(--ink);margin-top:48px;padding-top:14px;font:12px/1.5 var(--sans);color:var(--muted);overflow-wrap:anywhere}
+  @media(max-width:700px){main{padding:28px 16px 60px}h1{font-size:29px}.strip{grid-template-columns:1fr 1fr}.cell:nth-child(2){border-right:0}.cell:nth-child(-n+2){border-bottom:1px solid var(--rule)}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<header>
+  <div class="kicker">Validated trade candidate · research endpoint</div>
+  <h1>{{ candidate.headline }}</h1>
+  <p class="dek">{{ candidate.thesis }}</p>
+  <div class="meta">
+    <span><b>Source</b> {{ candidate.source_name }}</span>
+    <span><b>Qualification</b> {{ candidate.qualification_status }}</span>
+    <span><b>Scope</b> {{ candidate.scope }}</span>
+    <span><b>Published</b> {{ candidate.published_at }}</span>
+    <span><b>Valid until</b> {{ candidate.valid_until }}</span>
+  </div>
+</header>
+
+<div class="notice"><b>Every research gate passed.</b> This record identifies a thesis worth considering. It is not an instruction to transact and does not decide portfolio fit.</div>
+
+<div class="strip">
+  <div class="cell"><div class="label">Instrument</div><div class="value">{{ candidate.instrument }}</div><div class="sub">the asset independently researched</div></div>
+  <div class="cell"><div class="label">Direction</div><div class="value">{{ candidate.direction }}</div><div class="sub">the research expression</div></div>
+  <div class="cell"><div class="label">Horizon</div><div class="value">{{ candidate.horizon }}</div><div class="sub">bounded by catalyst and expiry</div></div>
+  <div class="cell"><div class="label">Expression origin</div><div class="value">{{ candidate.expression_origin }}</div><div class="sub">{{ candidate.expression_origin_note }}</div></div>
+</div>
+
+<section>
+  <h2>Why the thesis survives</h2>
+  <div class="grid">
+    <div class="card"><div class="label">Expectations gap</div><p>{{ candidate.expectations_gap }}</p></div>
+    <div class="card"><div class="label">Catalyst</div><p>{{ candidate.catalyst }}</p></div>
+    <div class="card"><div class="label">Downside</div><p>{{ candidate.downside }}</p></div>
+    <div class="card"><div class="label">Strongest countercase</div><p>{{ candidate.countercase }}</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Invalidators and review triggers</h2>
+  <ul>
+  {% for trigger in candidate.invalidators %}
+    <li class="trigger"><span class="due">{{ trigger.due_at }}</span> {{ trigger.condition }} <span class="pill">{{ trigger.kind }}</span></li>
+  {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Critical assertions</h2>
+  <table>
+    <thead><tr><th>Assertion</th><th>Provenance</th><th>Verdict</th><th>Evidence</th></tr></thead>
+    <tbody>
+    {% for assertion in candidate.assertions %}
+      <tr><td>{{ assertion.text }}</td><td><span class="pill">{{ assertion.provenance }}</span></td><td>{{ assertion.verdict }}</td><td>{{ assertion.evidence_count }} capture{% if assertion.evidence_count != 1 %}s{% endif %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Evidence manifest</h2>
+  {% for evidence in candidate.evidence %}
+  <details>
+    <summary>{{ evidence.label }} · {{ evidence.retrieved_at }}</summary>
+    <div class="inside"><a href="{{ evidence.url }}">{{ evidence.url }}</a><blockquote>“{{ evidence.quote }}”</blockquote><span class="pill">{{ evidence.capture_quality }}</span></div>
+  </details>
+  {% endfor %}
+</section>
+
+<div class="foot">
+  Candidate {{ candidate.candidate_id }} · case {{ candidate.case_id }} · episode {{ candidate.episode_id }}<br>
+  Check digest {{ candidate.check_digest }} · evaluator {{ candidate.evaluator_version }}<br>
+  Generated {{ generated_at }} by narrative-ledger schema 2.0. Research process, not investment advice.
+</div>
+</main></body></html>

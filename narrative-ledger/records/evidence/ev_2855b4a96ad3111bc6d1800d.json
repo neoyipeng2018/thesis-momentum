@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_2855b4a96ad3111bc6d1800d",
+  "url": "https://www.nic.org/news-press/senior-living-occupancy-grows-amid-construction-slowdown-limiting-options-for-older-adults/",
+  "quote": "At the same time, new units under construction fell to their lowest level since 2012, and year-over-year inventory growth hit a record low of 0.4% in the first quarter of 2026, suggesting new supply is unlikely to accelerate in the near term.",
+  "retrieved_at": "2026-07-02T16:46:00Z",
+  "published_at": null,
+  "content_sha256": "5a5139a23648f59f36afdb147ff15ef6d0c51a434963755399f152da4dec657e",
+  "capture_kind": "quote_only_legacy"
+}

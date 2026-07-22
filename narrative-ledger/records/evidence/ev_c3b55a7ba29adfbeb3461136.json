@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_c3b55a7ba29adfbeb3461136",
+  "url": "https://www.nic.org/news-press/senior-living-occupancy-grows-amid-construction-slowdown-limiting-options-for-older-adults/",
+  "quote": "At the current pace of development and demand, NIC analysts believe senior housing occupancy is on track to surpass 90% occupancy well before the end of the year, further tightening availability across many markets.",
+  "retrieved_at": "2026-07-02T16:46:00Z",
+  "published_at": null,
+  "content_sha256": "7c7ca49d23d375e6290c8177fdd67e2dad42b0b1a3e004e4f711a244d92eb299",
+  "capture_kind": "quote_only_legacy"
+}

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>narrative-ledger v2 cutover plan</title>
+<style>
+  :root{--paper:#f6f3ec;--card:#fbf9f4;--ink:#201c17;--soft:#595147;--muted:#766d61;--rule:#d8cfbf;--accent:#8c2f24;--blue:#2f5365;--green:#3f6b4f;--amber:#9a6b1f;--red:#9a3b2f;--mono:"SFMono-Regular",Consolas,monospace;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--serif:Georgia,"Times New Roman",serif}
+  *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.62 var(--serif)}
+  main{max-width:940px;margin:auto;padding:44px 28px 100px} header{border-bottom:2px solid var(--ink);padding-bottom:22px}
+  .kicker,.eyebrow{font:700 11px/1.3 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  h1{font-size:40px;line-height:1.08;margin:12px 0} h2{font-size:27px;border-bottom:1px solid var(--rule);padding-bottom:8px;margin:48px 0 16px} h3{font-size:20px;margin:28px 0 8px}
+  p{margin:0 0 15px}.dek{font-size:20px;color:var(--soft)}.meta{display:flex;gap:10px 24px;flex-wrap:wrap;font:13px var(--sans);color:var(--muted);margin-top:18px}
+  nav,.box,.phase{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:18px 22px;margin:22px 0}
+  nav ol{columns:2;margin:10px 0 0;padding-left:20px} nav li{font:14px var(--sans);margin:7px 0} a{color:var(--accent)}
+  table{width:100%;border-collapse:collapse;font:14px/1.45 var(--sans);margin:18px 0} th,td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)} th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:#eee8dc}
+  code{font:13px var(--mono);background:#ece5d8;border-radius:4px;padding:1px 5px} pre{overflow:auto;background:#24211d;color:#f0e8d8;border-radius:9px;padding:16px;font:13px/1.55 var(--mono)}
+  ul,ol{padding-left:24px}li{margin:7px 0}.rule{border-left:4px solid var(--blue)}.danger{border-left:4px solid var(--red)}
+  .phase{padding:0;overflow:hidden}.phase-head{display:flex;align-items:center;gap:12px;padding:13px 17px;background:#eee8dc}.phase-head h3{margin:0;flex:1}.status{font:700 10px var(--sans);letter-spacing:.07em;text-transform:uppercase;border-radius:20px;padding:5px 9px}.done{background:#dfeade;color:var(--green)}.active{background:#f4e6ca;color:var(--amber)}.pending{background:#e4e8eb;color:var(--blue)}
+  .phase-body{padding:12px 20px 17px}.tasks{list-style:none;padding:0}.tasks li{position:relative;padding-left:28px}.tasks li::before{position:absolute;left:0;font:18px var(--sans);color:var(--accent)}.tasks .complete::before{content:"☑";color:var(--green)}.tasks .in-progress::before{content:"◩";color:var(--amber)}.tasks .todo::before{content:"☐"}
+  .small{font:13px/1.5 var(--sans);color:var(--muted)}
+  @media(max-width:650px){main{padding:28px 16px 70px}h1{font-size:31px}nav ol{columns:1}.phase-head{align-items:flex-start;flex-wrap:wrap}}
+</style>
+</head>
+<body><main>
+<header>
+  <div class="kicker">narrative-ledger · irreversible v2 cutover</div>
+  <h1>From borrowed conviction to validated candidates</h1>
+  <p class="dek">Restructure the repository around discovery of credible research sources, independent underwriting of their theses, and a hard stop at a validated trade candidate. Remove the sizing workflow and rebuild state from raw evidence whenever requested.</p>
+  <div class="meta"><span><b>Scope</b> interventions #1–#5</span><span><b>Migration</b> raw-only, fresh start</span><span><b>Compatibility</b> none</span><span><b>Updated</b> 23 July 2026</span></div>
+</header>
+
+<nav><div class="eyebrow">Contents</div><ol>
+  <li><a href="#locked">Locked decisions</a></li><li><a href="#workflow">Target workflow</a></li><li><a href="#model">Domain contract</a></li><li><a href="#interfaces">Deep interfaces</a></li><li><a href="#migration">Migration</a></li><li><a href="#phases">Implementation phases</a></li><li><a href="#tests">Acceptance matrix</a></li><li><a href="#non-goals">Non-goals</a></li>
+</ol></nav>
+
+<section id="locked"><div class="eyebrow">01 — Product boundary</div><h2>Locked decisions</h2>
+  <div class="box rule"><b>The output is research, not portfolio action.</b> The sole successful endpoint is a <code>validated_trade_candidate</code>. It may identify an instrument, direction, horizon or catalyst, thesis, downside, invalidators, and evidence. It may not contain allocation, order, execution, conviction-sizing, or position-management instructions.</div>
+  <ul>
+    <li>Sources begin <code>probationary</code>. Qualification is an explicit, evidence-backed manual assessment stored in a source profile.</li>
+    <li>Only a currently <code>qualified</code> source, inside its declared scope, may yield a validated candidate.</li>
+    <li>A researcher-authored expression is allowed and must be labelled <code>researcher</code>; it is never attributed to or scored as a source call.</li>
+    <li>Checking and publishing are separate. <code>check</code> performs no writes. <code>publish-candidate</code> requires the exact digest returned by the check.</li>
+    <li>The dispositions are <code>unscorable</code>, <code>no_actionable_thesis</code>, <code>insufficient_material</code>, <code>reject</code>, <code>watch</code>, and <code>validated_trade_candidate</code>.</li>
+    <li>Every assertion records whether it was <code>stated</code>, <code>inferred</code>, <code>assumed</code>, or <code>missing</code>. Verification may change evidentiary verdicts, never provenance.</li>
+    <li>No runtime v1 mode, compatibility adapter, inherited score, or inherited candidate status survives the cutover.</li>
+  </ul>
+</section>
+
+<section id="workflow"><div class="eyebrow">02 — Router</div><h2>Target workflow</h2>
+<pre>scout → explicit qualification seam → scan → underwrite → check
+                                                       ├─ terminal refusal/watch
+                                                       └─ publishable candidate check
+                                                            ↓ explicit digest-bound publish
+                                                      candidate record → candidate report
+</pre>
+<table><thead><tr><th>Mode</th><th>Owns</th><th>Completion</th><th>Must not do</th></tr></thead><tbody>
+<tr><td><code>scout</code></td><td>Identity, archive, feeds, domain, conflicts, qualification evidence</td><td>Source profile exists; qualification is explicit</td><td>Infer trust from popularity or cross the manual qualification seam</td></tr>
+<tr><td><code>scan</code></td><td>Enumerate a time window, deduplicate artifacts, preserve attribution and timestamps</td><td>Zero or more captured research episodes</td><td>Invent an expression or validate a thesis</td></tr>
+<tr><td><code>underwrite</code></td><td>Claims, countercase, independent evidence, expectations, expression, catalyst, invalidators</td><td>One honest disposition</td><td>Bypass source qualification when called directly</td></tr>
+<tr><td><code>monitor</code></td><td>Candidate research validity, expiry, evidence-refresh and invalidation triggers</td><td>Current candidate status</td><td>Track positions, orders, or P&amp;L</td></tr>
+<tr><td><code>full</code></td><td>Orchestrate the prior modes and stop at the first terminal state</td><td>Refusal/watch or publishable candidate check</td><td>Silently qualify a source or publish a candidate</td></tr>
+</tbody></table>
+</section>
+
+<section id="model"><div class="eyebrow">03 — Ubiquitous language</div><h2>Domain contract</h2>
+<table><thead><tr><th>Object</th><th>Purpose</th><th>Critical invariant</th></tr></thead><tbody>
+<tr><td><code>SourceProfile</code></td><td>Identity, feeds, domains, explicit qualification and evidence</td><td><code>qualified</code> requires evidence, scope, assessor, method, and a live review date</td></tr>
+<tr><td><code>ResearchEpisode</code></td><td>Point-in-time source artifact and supplement provenance</td><td>Stable ID and hashes derive only from raw inputs</td></tr>
+<tr><td><code>EvidenceCapture</code></td><td>Verbatim quote, URL, timestamps, and capture quality</td><td>Legacy quotes remain unadjudicated; old verdicts are discarded</td></tr>
+<tr><td><code>ResearchCase</code></td><td>Fresh v2 underwriting submission</td><td>No sizing, position, outcome, source score, or forecast fields</td></tr>
+<tr><td><code>CheckResult</code></td><td>Pure deterministic gate result and content digest</td><td>Same inputs produce the same result and no filesystem mutation</td></tr>
+<tr><td><code>ValidatedCandidate</code></td><td>Published research endpoint</td><td>Qualified source, complete evidence, monitorable invalidators, bound check digest</td></tr>
+</tbody></table>
+<div class="box danger"><b>Fail closed.</b> Probationary, suspended, rejected, expired, out-of-scope, incomplete, unmonitorable, or stale-digest work cannot be published as a candidate. An empty candidate list is a successful system state.</div>
+</section>
+
+<section id="interfaces"><div class="eyebrow">04 — Module seams</div><h2>Deep interfaces</h2>
+<p>The implementation keeps policy behind four narrow interfaces so callers do not need to understand validation ordering, digest construction, atomic writes, or report field selection.</p>
+<pre>check_case(case, profile, episode, evidence) → CheckResult      # pure
+publish_candidate(..., expected_digest, published_at) → result # atomic, idempotent
+migrate_v1(root, dry_run) → MigrationResult                    # raw-only
+fresh_start(root, dry_run) → ResetResult                       # derived state only
+render_candidate(candidate, profile, evidence, output)          # candidate input only</pre>
+<p>The report adapter maps a <code>ValidatedCandidate</code> into a dedicated view model. It cannot infer candidate status from a draft or accept a legacy payload.</p>
+</section>
+
+<section id="migration"><div class="eyebrow">05 — Data cutover</div><h2>Fresh-start migration</h2>
+<table><thead><tr><th>v1 material</th><th>v2 treatment</th></tr></thead><tbody>
+<tr><td><code>artifact.md</code>, <code>supplement_*.md</code>, URLs, hashes, publication/retrieval timestamps</td><td>Preserve exact files and register stable episode/artifact references</td></tr>
+<tr><td>Evidence URLs, verbatim quotes, retrieval timestamps</td><td>Preserve as <code>quote_only_legacy</code> evidence with no inherited verdict</td></tr>
+<tr><td>Claims, restatements, load-bearing flags, verdicts, expectations scores, narrative stage, brief</td><td>Discard; fresh v2 research must recreate them</td></tr>
+<tr><td>Decision, expression attribution, conviction, size, outcome, forecast</td><td>Discard</td></tr>
+<tr><td><code>calls.csv</code>, source scores, technical snapshots, generated reports</td><td>Discard as derived or contaminated state</td></tr>
+<tr><td>Real source identities and feeds</td><td>Create probationary source profiles; omit placeholders</td></tr>
+</tbody></table>
+<p><code>migrate-v2</code> reports every preserve/discard action without writing; <code>migrate-v2 --apply</code> performs the cutover. Application is deterministic and idempotent. <code>fresh-start</code> preserves raw runs, source profiles, episode records, evidence captures, and the migration manifest while clearing research cases, published candidates, and generated candidate reports.</p>
+</section>
+
+<section id="phases"><div class="eyebrow">06 — Execution ledger</div><h2>Implementation phases</h2>
+<div class="phase" id="phase-0"><div class="phase-head"><h3>P0 · Plan and baseline</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Record product, migration, and qualification decisions</li><li class="complete">Create <code>plan.html</code> and <code>implementation-notes.html</code></li><li class="complete">Capture baseline git, test, typecheck, and runtime issues</li></ul></div></div>
+<div class="phase" id="phase-1"><div class="phase-head"><h3>P1 · Candidate-only contract and router</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Rewrite <code>SKILL.md</code> around scout, scan, underwrite, monitor, and full modes</li><li class="complete">Rewrite README and research references without sizing or position language</li><li class="complete">Expose qualification-aware router commands</li></ul></div></div>
+<div class="phase" id="phase-2"><div class="phase-head"><h3>P2 · v2 schema, dispositions, and provenance</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Replace v1 payload objects with typed v2 domain records</li><li class="complete">Enforce qualification, disposition, provenance, expression-origin, and timestamp invariants</li><li class="complete">Add deterministic source, episode, evidence, case, check, and candidate identifiers</li></ul></div></div>
+<div class="phase" id="phase-3"><div class="phase-head"><h3>P3 · Pure check and explicit publication</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Build a zero-write deterministic checker</li><li class="complete">Bind publication to the checked content digest</li><li class="complete">Make candidate publication atomic, idempotent, and stale-digest safe</li></ul></div></div>
+<div class="phase" id="phase-4"><div class="phase-head"><h3>P4 · Candidate report adapter</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Replace the generic report with a candidate-only template and view model</li><li class="complete">Render provenance, qualification, countercase, evidence, catalyst, invalidators, and validity window</li><li class="complete">Reject drafts and eliminate sizing language from generated output</li></ul></div></div>
+<div class="phase" id="phase-5"><div class="phase-head"><h3>P5 · Migrate everything and prove fresh start</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Implement dry-run, deterministic migration, integrity checks, and manifest</li><li class="complete">Preserve Citrini raw material and legacy quotes; remove all derived v1 state</li><li class="complete">Create only probationary real-source profiles and prove candidates are empty</li><li class="complete">Implement repeatable derived-state reset</li></ul></div></div>
+<div class="phase" id="phase-6"><div class="phase-head"><h3>P6 · Verification, review, and handoff</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Keep strict typecheck green and run focused tests throughout</li><li class="complete">Run full tests, migration determinism checks, and forbidden-language scans</li><li class="complete">Run Standards and Spec code reviews in parallel and resolve findings</li><li class="complete">Mark every task complete, record final notes, and commit the cutover</li></ul></div></div>
+</section>
+
+<section id="tests"><div class="eyebrow">07 — Proof</div><h2>Acceptance matrix</h2>
+<ul>
+  <li>Candidate models reject allocation, position, order, execution, score, conviction, and size fields.</li>
+  <li>Every disposition renders honestly; <code>watch</code> requires a dated review and measurable trigger.</li>
+  <li>A source-stated ticker with an inferred direction is not represented as a source-authored expression.</li>
+  <li>Direct underwriting cannot bypass qualification; researcher expressions never change source state.</li>
+  <li><code>check</code> leaves the entire tree byte-for-byte unchanged.</li>
+  <li>Edited content cannot be published with an earlier digest; repeat publication does not rewrite the candidate.</li>
+  <li>Two migrations produce identical canonical records; migration never mutates raw input files.</li>
+  <li>After migration and after fresh start, the candidate endpoint returns an empty list.</li>
+  <li>Candidate-exposed authored text, source quotes, evidence quotes, and generated HTML contain no sizing, starter-position, allocation, execution, or position-management instructions.</li>
+</ul>
+</section>
+
+<section id="non-goals"><div class="eyebrow">08 — Scope control</div><h2>Non-goals</h2>
+<p>This cutover does not build automated source scoring, performance attribution, a portfolio ledger, order execution, P&amp;L monitoring, blind-identity research infrastructure, a database projection, or notification delivery. The v2 seams permit those later without leaking them into the candidate contract.</p>
+<p class="small">The current plan is complete only when every phase above is marked Completed and the repository itself has been migrated.</p>
+</section>
+</main></body></html>

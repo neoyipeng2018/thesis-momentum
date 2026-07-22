@@ -1,0 +1,19 @@
+{
+  "schema_version": "2.0",
+  "source_id": "src_c9d0977902d2bb32aee3c951",
+  "name": "Lyn Alden",
+  "venue": "https://www.lynalden.com/",
+  "feeds": [
+    "https://www.lynalden.com/feed/"
+  ],
+  "domains": [
+    "lynalden.com"
+  ],
+  "declared_scopes": [],
+  "qualification_status": "probationary",
+  "qualification_evidence_ids": [],
+  "assessor": null,
+  "assessment_method": "v1_migration",
+  "assessed_at": null,
+  "review_due_at": null
+}

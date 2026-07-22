@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_00be5671cabd8deff1f0cfb5",
+  "url": "https://www.sec.gov/Archives/edgar/data/766704/000076670426000018/a1q26earningsrelease991.htm",
+  "quote": "Reported total portfolio year-over-year same store NOI (\"SSNOI\") growth of 16.4%, driven by SSNOI growth in our Seniors Housing Operating (\"SHO\") portfolio of 22.1%",
+  "retrieved_at": "2026-07-04T08:08:00Z",
+  "published_at": null,
+  "content_sha256": "16f07417afe81186e81bc42debf35b22f447134242c091671afefc4028ecec3a",
+  "capture_kind": "quote_only_legacy"
+}

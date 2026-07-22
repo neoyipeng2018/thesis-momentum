@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_d253243ce46623219f0013dc",
+  "url": "https://stockanalysis.com/stocks/well/",
+  "quote": "236.06",
+  "retrieved_at": "2026-07-04T08:12:00Z",
+  "published_at": null,
+  "content_sha256": "18885963a5b1e53fea6eb843b19e19d173bd7668331ed0778a188751cbeeff8f",
+  "capture_kind": "quote_only_legacy"
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "2.0",
+  "episode_id": "ep_56bc72798d9eae624b9c7a19",
+  "source_id": "src_439f60f2c24a5d5943d78749",
+  "artifact_url": "https://www.citriniresearch.com/p/small-themes-june-2026",
+  "title": "Small Themes: June 2026",
+  "published_at": "2026-06-24T13:09:19Z",
+  "retrieved_at": "2026-07-02T16:51:55.409646Z",
+  "content_sha256": "2d17b834deb813632a01a2b1978fa16908c492b584aeaa1553b7c7efa0976497",
+  "completeness": "unknown",
+  "attribution_quality": "direct",
+  "supplement_evidence_ids": [
+    "ev_bb073fb633a02ff644fd63f3"
+  ]
+}

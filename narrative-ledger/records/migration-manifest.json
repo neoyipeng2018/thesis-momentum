@@ -1,0 +1,214 @@
+{
+  "actions": [
+    {
+      "kind": "discard_derived",
+      "reason": "derived_or_contaminated_v1_state",
+      "sha256": null,
+      "source": "ledger/calls.csv",
+      "target": null
+    },
+    {
+      "kind": "discard_derived",
+      "reason": "derived_or_contaminated_v1_state",
+      "sha256": null,
+      "source": "runs/2026-07-03_citrini/payload.json",
+      "target": null
+    },
+    {
+      "kind": "discard_derived",
+      "reason": "derived_or_contaminated_v1_state",
+      "sha256": null,
+      "source": "runs/2026-07-03_citrini/report.html",
+      "target": null
+    },
+    {
+      "kind": "discard_derived",
+      "reason": "derived_or_contaminated_v1_state",
+      "sha256": null,
+      "source": "runs/2026-07-03_citrini/technicals.json",
+      "target": null
+    },
+    {
+      "kind": "preserve_raw",
+      "reason": null,
+      "sha256": "2d17b834deb813632a01a2b1978fa16908c492b584aeaa1553b7c7efa0976497",
+      "source": "runs/2026-07-03_citrini/artifact.md",
+      "target": "records/raw/2026-07-03_citrini/artifact.md"
+    },
+    {
+      "kind": "preserve_raw",
+      "reason": null,
+      "sha256": "92ed5675826e3f598dab2fcdac122f2b0c2bcfdbb4e79ffd58d4e340d40fa1ec",
+      "source": "runs/2026-07-03_citrini/sources.json",
+      "target": "records/raw/2026-07-03_citrini/sources.json"
+    },
+    {
+      "kind": "preserve_raw",
+      "reason": null,
+      "sha256": "f0cf0552d37c3e90c5f58e1960a967831a59f796106c452ada675d4ca67100ea",
+      "source": "runs/2026-07-03_citrini/supplement_1.md",
+      "target": "records/raw/2026-07-03_citrini/supplement_1.md"
+    },
+    {
+      "kind": "write_episode",
+      "reason": null,
+      "sha256": "2451e0c12463d3a2c0b22b5f1640af21b7aa456434204a88827c620c610c4488",
+      "source": "runs/2026-07-03_citrini/sources.json",
+      "target": "records/episodes/ep_56bc72798d9eae624b9c7a19.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "ca7462e1c8854242f621ec2cf557d7bfc1ad35d7401a898260a2b7df02ebca74",
+      "source": "runs/2026-07-03_citrini/payload.json#/claims/0/evidence/0",
+      "target": "records/evidence/ev_b26247883dd75fa4c3a17ea9.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "1fcdf6ca06cdcbf4e557044e9f8e64f2b36530468def3f4c35691ddb8f4bed3a",
+      "source": "runs/2026-07-03_citrini/payload.json#/claims/0/evidence/1",
+      "target": "records/evidence/ev_2855b4a96ad3111bc6d1800d.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "13fd2ad17cf2292224646cce4fc04f0c5796d2969fa68ca001b64c5d0c879eb6",
+      "source": "runs/2026-07-03_citrini/payload.json#/claims/1/evidence/0",
+      "target": "records/evidence/ev_bb073fb633a02ff644fd63f3.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "e74466ecd08738c176b8ed3cacc41f7a76c648fa798308d417be78ac95584de4",
+      "source": "runs/2026-07-03_citrini/payload.json#/claims/1/evidence/1",
+      "target": "records/evidence/ev_00be5671cabd8deff1f0cfb5.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "dcf23a6cef373224743d57f05898a4195801d11ca7b4948974ba46330bb18fb0",
+      "source": "runs/2026-07-03_citrini/payload.json#/claims/1/evidence/2",
+      "target": "records/evidence/ev_72b50ae5a4903be408d51e45.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "bc37ab6ba914e78990515acc4692ad6dae558e74eda86bb7891fb421a1c51a1e",
+      "source": "runs/2026-07-03_citrini/payload.json#/claims/2/evidence/0",
+      "target": "records/evidence/ev_c3b55a7ba29adfbeb3461136.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "44a561b7c45af8d5e590fce23b663d4ad6b29f241e7c0b643c0e342f9e6fe070",
+      "source": "runs/2026-07-03_citrini/payload.json#/claims/2/evidence/1",
+      "target": "records/evidence/ev_bb3d2238ff4dfc1b2d2430d8.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "9aacb48a804c7828bd8e009578e8e1fb4fb2a3381bb2bd109a34cc6d994befa4",
+      "source": "runs/2026-07-03_citrini/payload.json#/priced_in/inputs/0/evidence",
+      "target": "records/evidence/ev_d253243ce46623219f0013dc.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "13a09650e0331bc2cebb0e71c94defa2f0d0ca615542062553a902cdf6f8ba1a",
+      "source": "runs/2026-07-03_citrini/payload.json#/priced_in/inputs/1/evidence",
+      "target": "records/evidence/ev_ca98f552cbc52d5bba9bfac3.json"
+    },
+    {
+      "kind": "write_evidence",
+      "reason": null,
+      "sha256": "c046a64a8391cfcf1a7bc8e51dbd538bce4a3a33f2214c1211494af96963b9f3",
+      "source": "runs/2026-07-03_citrini/payload.json#/priced_in/inputs/2/evidence",
+      "target": "records/evidence/ev_11a8280f9079d81e400bd959.json"
+    },
+    {
+      "kind": "write_source",
+      "reason": null,
+      "sha256": "f2760ec004fdc7e8a15304f5273687837c0b605e3ec2b3a81ab3be65060716e3",
+      "source": "config/watchlist.yaml#citrini",
+      "target": "records/sources/src_439f60f2c24a5d5943d78749.json"
+    },
+    {
+      "kind": "write_source",
+      "reason": null,
+      "sha256": "a72bbcfe681bb9a358d654e054eb8427287df8167b049e1d75f80e8cd91b6d08",
+      "source": "config/watchlist.yaml#lyn-alden",
+      "target": "records/sources/src_c9d0977902d2bb32aee3c951.json"
+    }
+  ],
+  "episode_count": 1,
+  "episode_retrieval_provenance": {
+    "ep_56bc72798d9eae624b9c7a19": {
+      "basis": "legacy_payload_created_at",
+      "source": "runs/2026-07-03_citrini/payload.json#/created_at"
+    }
+  },
+  "evidence_count": 10,
+  "evidence_provenance": {
+    "ev_00be5671cabd8deff1f0cfb5": [
+      "runs/2026-07-03_citrini/payload.json#/claims/1/evidence/1"
+    ],
+    "ev_11a8280f9079d81e400bd959": [
+      "runs/2026-07-03_citrini/payload.json#/priced_in/inputs/2/evidence"
+    ],
+    "ev_2855b4a96ad3111bc6d1800d": [
+      "runs/2026-07-03_citrini/payload.json#/claims/0/evidence/1"
+    ],
+    "ev_72b50ae5a4903be408d51e45": [
+      "runs/2026-07-03_citrini/payload.json#/claims/1/evidence/2"
+    ],
+    "ev_b26247883dd75fa4c3a17ea9": [
+      "runs/2026-07-03_citrini/payload.json#/claims/0/evidence/0"
+    ],
+    "ev_bb073fb633a02ff644fd63f3": [
+      "runs/2026-07-03_citrini/payload.json#/claims/1/evidence/0"
+    ],
+    "ev_bb3d2238ff4dfc1b2d2430d8": [
+      "runs/2026-07-03_citrini/payload.json#/claims/2/evidence/1"
+    ],
+    "ev_c3b55a7ba29adfbeb3461136": [
+      "runs/2026-07-03_citrini/payload.json#/claims/2/evidence/0"
+    ],
+    "ev_ca98f552cbc52d5bba9bfac3": [
+      "runs/2026-07-03_citrini/payload.json#/priced_in/inputs/1/evidence"
+    ],
+    "ev_d253243ce46623219f0013dc": [
+      "runs/2026-07-03_citrini/payload.json#/priced_in/inputs/0/evidence"
+    ]
+  },
+  "integrity_problems": [],
+  "manifest_sha256": "e6a75ef2a8f8106fa362b1bd018c14d0f8166f15deb5f3cb192281c5ee0ee236",
+  "migration": "v1_to_v2_raw_only",
+  "raw_files": [
+    {
+      "sha256": "2d17b834deb813632a01a2b1978fa16908c492b584aeaa1553b7c7efa0976497",
+      "source": "runs/2026-07-03_citrini/artifact.md",
+      "target": "records/raw/2026-07-03_citrini/artifact.md"
+    },
+    {
+      "sha256": "92ed5675826e3f598dab2fcdac122f2b0c2bcfdbb4e79ffd58d4e340d40fa1ec",
+      "source": "runs/2026-07-03_citrini/sources.json",
+      "target": "records/raw/2026-07-03_citrini/sources.json"
+    },
+    {
+      "sha256": "f0cf0552d37c3e90c5f58e1960a967831a59f796106c452ada675d4ca67100ea",
+      "source": "runs/2026-07-03_citrini/supplement_1.md",
+      "target": "records/raw/2026-07-03_citrini/supplement_1.md"
+    }
+  ],
+  "schema_version": "2.0",
+  "source_id_map": {
+    "citrini": "src_439f60f2c24a5d5943d78749",
+    "lyn-alden": "src_c9d0977902d2bb32aee3c951"
+  },
+  "source_ids": [
+    "src_439f60f2c24a5d5943d78749",
+    "src_c9d0977902d2bb32aee3c951"
+  ],
+  "status": "migration_complete"
+}

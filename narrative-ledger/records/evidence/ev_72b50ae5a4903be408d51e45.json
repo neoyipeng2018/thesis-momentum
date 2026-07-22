@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_72b50ae5a4903be408d51e45",
+  "url": "https://www.sec.gov/Archives/edgar/data/766704/000076670426000018/a1q26earningsrelease991.htm",
+  "quote": "SHO portfolio organic same store revenue growth increased 9.5% year-over-year in the first quarter, resulting from 370 basis points (\"bps\") of average occupancy growth and 5.0% growth in Revenue Per Occupied Room (\"RevPOR\")",
+  "retrieved_at": "2026-07-04T08:08:00Z",
+  "published_at": null,
+  "content_sha256": "e6a730fa12987678f5e526f4021e1b8061d951393dd4e541fecca9b011ab42ab",
+  "capture_kind": "quote_only_legacy"
+}
