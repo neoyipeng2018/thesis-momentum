@@ -97,14 +97,92 @@ render_candidate(candidate, profile, evidence, output)          # candidate inpu
 <p><code>migrate-v2</code> reports every preserve/discard action without writing; <code>migrate-v2 --apply</code> performs the cutover. Application is deterministic and idempotent. <code>fresh-start</code> preserves raw runs, source profiles, episode records, evidence captures, and the migration manifest while clearing research cases, published candidates, and generated candidate reports.</p>
 </section>
 
-<section id="phases"><div class="eyebrow">06 — Execution ledger</div><h2>Implementation phases</h2>
-<div class="phase" id="phase-0"><div class="phase-head"><h3>P0 · Plan and baseline</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Record product, migration, and qualification decisions</li><li class="complete">Create <code>plan.html</code> and <code>implementation-notes.html</code></li><li class="complete">Capture baseline git, test, typecheck, and runtime issues</li></ul></div></div>
-<div class="phase" id="phase-1"><div class="phase-head"><h3>P1 · Candidate-only contract and router</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Rewrite <code>SKILL.md</code> around scout, scan, underwrite, monitor, and full modes</li><li class="complete">Rewrite README and research references without sizing or position language</li><li class="complete">Expose qualification-aware router commands</li></ul></div></div>
-<div class="phase" id="phase-2"><div class="phase-head"><h3>P2 · v2 schema, dispositions, and provenance</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Replace v1 payload objects with typed v2 domain records</li><li class="complete">Enforce qualification, disposition, provenance, expression-origin, and timestamp invariants</li><li class="complete">Add deterministic source, episode, evidence, case, check, and candidate identifiers</li></ul></div></div>
-<div class="phase" id="phase-3"><div class="phase-head"><h3>P3 · Pure check and explicit publication</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Build a zero-write deterministic checker</li><li class="complete">Bind publication to the checked content digest</li><li class="complete">Make candidate publication atomic, idempotent, and stale-digest safe</li></ul></div></div>
-<div class="phase" id="phase-4"><div class="phase-head"><h3>P4 · Candidate report adapter</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Replace the generic report with a candidate-only template and view model</li><li class="complete">Render provenance, qualification, countercase, evidence, catalyst, invalidators, and validity window</li><li class="complete">Reject drafts and eliminate sizing language from generated output</li></ul></div></div>
-<div class="phase" id="phase-5"><div class="phase-head"><h3>P5 · Migrate everything and prove fresh start</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Implement dry-run, deterministic migration, integrity checks, and manifest</li><li class="complete">Preserve Citrini raw material and legacy quotes; remove all derived v1 state</li><li class="complete">Create only probationary real-source profiles and prove candidates are empty</li><li class="complete">Implement repeatable derived-state reset</li></ul></div></div>
-<div class="phase" id="phase-6"><div class="phase-head"><h3>P6 · Verification, review, and handoff</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks"><li class="complete">Keep strict typecheck green and run focused tests throughout</li><li class="complete">Run full tests, migration determinism checks, and forbidden-language scans</li><li class="complete">Run Standards and Spec code reviews in parallel and resolve findings</li><li class="complete">Mark every task complete, record final notes, and commit the cutover</li></ul></div></div>
+<section id="phases"><div class="eyebrow">06 — Execution ledger</div><h2>Detailed implementation checklist</h2>
+<div class="box rule"><b>Planning boundary.</b> The checklist below decomposes the work in dependency order. This document-only update does not authorize or start another implementation cycle; status markers retain the repository's existing cutover record.</div>
+<div class="phase" id="phase-0"><div class="phase-head"><h3>P0 · Plan, inventory, and baseline</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks">
+<li class="complete"><code>P0.1</code> Inventory every package module, CLI command, reference document, template, test, run artifact, and generated output in the v1 repository.</li>
+<li class="complete"><code>P0.2</code> Trace the v1 workflow end to end and identify every hidden write, especially payload mutation, sizing calculations, generated reports, and <code>calls.csv</code> appends.</li>
+<li class="complete"><code>P0.3</code> Lock the product boundary: end at <code>validated_trade_candidate</code> and exclude allocation, execution, sizing, position management, and performance attribution.</li>
+<li class="complete"><code>P0.4</code> Lock the source policy: start probationary, require explicit evidence-backed manual qualification, and scope every qualification decision.</li>
+<li class="complete"><code>P0.5</code> Classify legacy material as raw evidence to preserve, safe metadata to reconstruct, or derived/contaminated state to discard.</li>
+<li class="complete"><code>P0.6</code> Define compatibility, migration, fresh-start, and recovery expectations, including the decision to provide no v1 runtime adapter.</li>
+<li class="complete"><code>P0.7</code> Capture the starting commit, dirty-tree ownership, Python/runtime behavior, baseline tests, and strict typecheck failures.</li>
+<li class="complete"><code>P0.8</code> Record acceptance criteria, non-goals, phase dependencies, and conservative deviation rules in <code>plan.html</code> and <code>implementation-notes.html</code>.</li>
+</ul></div></div>
+<div class="phase" id="phase-1"><div class="phase-head"><h3>P1 · Candidate-only contract and orchestration</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks">
+<li class="complete"><code>P1.1</code> Define the five workflow modes—<code>scout</code>, <code>scan</code>, <code>underwrite</code>, <code>monitor</code>, and <code>full</code>—with explicit inputs, outputs, and ownership.</li>
+<li class="complete"><code>P1.2</code> Enumerate honest terminal states for discovery exhaustion, qualification stops, empty scans, failed checks, watch cases, current candidates, refresh requests, and expiry.</li>
+<li class="complete"><code>P1.3</code> Specify first-terminal ordering so <code>full</code> stops at missing or probationary source state before requiring later episode or evidence dependencies.</li>
+<li class="complete"><code>P1.4</code> Rewrite <code>SKILL.md</code> around the candidate-only workflow, manual qualification seam, shared invariants, and candidate stopping condition.</li>
+<li class="complete"><code>P1.5</code> Rewrite the README and mode references to remove v1 scoring, priced-in, sizing, position, and performance workflows.</li>
+<li class="complete"><code>P1.6</code> Implement typed router results and mode functions that never qualify a source, publish a candidate, or mutate stored records.</li>
+<li class="complete"><code>P1.7</code> Expose CLI commands for every mode with timezone-aware windows, consistent <code>as_of</code> handling, and structured errors.</li>
+<li class="complete"><code>P1.8</code> Build shared source and episode registries that deduplicate identical stable IDs and fail closed on conflicting records.</li>
+<li class="complete"><code>P1.9</code> Add router and CLI tests for every terminal state, empty result, ordering rule, duplicate identity, and direct-underwriting qualification boundary.</li>
+</ul></div></div>
+<div class="phase" id="phase-2"><div class="phase-head"><h3>P2 · Typed v2 domain model and invariants</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks">
+<li class="complete"><code>P2.1</code> Replace the broad v1 payload with immutable, extra-forbid records for <code>SourceProfile</code>, <code>ResearchEpisode</code>, <code>EvidenceCapture</code>, <code>ResearchCase</code>, <code>CheckResult</code>, and <code>ValidatedCandidate</code>.</li>
+<li class="complete"><code>P2.2</code> Model assertions, expressions, session/date/event horizons, catalysts, watch triggers, invalidators, provenance, evidence verdicts, and capture quality without <code>Any</code> or unknown types.</li>
+<li class="complete"><code>P2.3</code> Derive stable IDs from canonical source venues, artifact identity, timestamps, content hashes, case opening time, and check digest.</li>
+<li class="complete"><code>P2.4</code> Enforce timezone awareness and ordering across publication, retrieval, assessment, review, opening, as-of, candidate publication, trigger, and validity timestamps.</li>
+<li class="complete"><code>P2.5</code> Enforce qualified-source requirements: declared scope, evidence, assessor, method, effective assessment, and live review date.</li>
+<li class="complete"><code>P2.6</code> Separate source-stated content from inferred or assumed research, and require a source-origin expression to have fully stated dimensions plus a source quote.</li>
+<li class="complete"><code>P2.7</code> Centralize referenced-evidence traversal so qualification, episode supplements, assertions, catalysts, invalidators, and watch triggers cannot drift across consumers.</li>
+<li class="complete"><code>P2.8</code> Reject allocation, order, execution, sizing, and position-management instructions from every candidate-exposed authored field, source quote, and referenced evidence quote.</li>
+<li class="complete"><code>P2.9</code> Mirror publication-critical catalyst, invalidator, scope, horizon, and validity invariants in the persisted candidate model so malformed JSON fails on load.</li>
+<li class="complete"><code>P2.10</code> Add focused model tests for stable identity, extra fields, provenance, temporal boundaries, instruction variants, and conflicting duplicate records.</li>
+</ul></div></div>
+<div class="phase" id="phase-3"><div class="phase-head"><h3>P3 · Pure checking and explicit publication</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks">
+<li class="complete"><code>P3.1</code> Implement <code>check_case</code> as a zero-write deterministic function returning typed issues, validity, publishability, disposition, version, and digest.</li>
+<li class="complete"><code>P3.2</code> Bind the digest to the complete profile, episode, case, checker version, and only the evidence captures actually referenced by those inputs.</li>
+<li class="complete"><code>P3.3</code> Validate source/case/episode identity, current qualification, declared scope, qualification evidence timing, and case/episode as-of timing.</li>
+<li class="complete"><code>P3.4</code> Fail candidate checks on incomplete or reconstructed episodes, missing/late/conflicting evidence, and disallowed <code>quote_only_legacy</code> support.</li>
+<li class="complete"><code>P3.5</code> Require thesis, expectations gap, downside, countercase, known expression provenance, a future evidenced catalyst, supported load-bearing assertions, monitorable invalidators, and a live validity window.</li>
+<li class="complete"><code>P3.6</code> Validate date/event horizons as future-dated and bounded by candidate validity while preserving session horizons.</li>
+<li class="complete"><code>P3.7</code> Keep checking and publication separate; require an explicit <code>publish-candidate</code> call with the exact successful digest.</li>
+<li class="complete"><code>P3.8</code> Rerun checking at publication, reject stale inputs, and recheck qualification, scope, catalyst, invalidators, horizon, and validity at <code>published_at</code>.</li>
+<li class="complete"><code>P3.9</code> Publish with an atomic exclusive write, derive candidate identity from the digest, and make identical retries idempotent without rewriting.</li>
+<li class="complete"><code>P3.10</code> Detect an existing candidate that is model-valid but not exactly bound to the checked inputs, and fail it as a conflict.</li>
+<li class="complete"><code>P3.11</code> Add purity, digest locality, stale-edit, temporal-boundary, atomicity, concurrency, tampering, idempotence, listing, and active-candidate tests.</li>
+</ul></div></div>
+<div class="phase" id="phase-4"><div class="phase-head"><h3>P4 · Candidate endpoint and report adapter</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks">
+<li class="complete"><code>P4.1</code> Define the candidate endpoint as zero or more published <code>ValidatedCandidate</code> records; treat an empty list as a successful state.</li>
+<li class="complete"><code>P4.2</code> Replace the generic v1 report with a dedicated candidate view model that accepts no draft case or legacy payload.</li>
+<li class="complete"><code>P4.3</code> Render source identity, qualified scope, thesis, expectations gap, expression origin and provenance, horizon, catalyst, downside, countercase, assertions, evidence, invalidators, validity, and audit IDs.</li>
+<li class="complete"><code>P4.4</code> Resolve only evidence IDs captured in the published manifest and fail closed when referenced evidence is missing.</li>
+<li class="complete"><code>P4.5</code> Recheck source/profile identity, qualification status, and persisted candidate scope before producing a report.</li>
+<li class="complete"><code>P4.6</code> Apply the instruction-language guard again to every evidence quote immediately before rendering.</li>
+<li class="complete"><code>P4.7</code> Restrict report output to flat lowercase <code>.html</code> files under owned report directories so fresh-start can remove every generated report.</li>
+<li class="complete"><code>P4.8</code> Package the Jinja template inside the installed <code>ledger</code> distribution and verify it from an isolated wheel install.</li>
+<li class="complete"><code>P4.9</code> Add report tests for candidate-only input, escaping, evidence selection, all horizon kinds, provenance labels, current scope, forbidden instructions, owned paths, and visible-text boundaries.</li>
+</ul></div></div>
+<div class="phase" id="phase-5"><div class="phase-head"><h3>P5 · Raw-only migration and repeatable fresh start</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks">
+<li class="complete"><code>P5.1</code> Inventory each legacy run, watchlist source, raw artifact, supplement, payload, technical snapshot, report, score file, and call ledger before planning writes or deletions.</li>
+<li class="complete"><code>P5.2</code> Build a pure deterministic dry-run plan listing every preserve, write, omit, and discard action with target paths and hashes.</li>
+<li class="complete"><code>P5.3</code> Copy artifacts, source metadata, and supplements byte-for-byte into <code>records/raw</code> while leaving original raw run files unchanged.</li>
+<li class="complete"><code>P5.4</code> Convert only real watchlist identities into probationary profiles with no inherited scope, trust status, or performance score; omit placeholders.</li>
+<li class="complete"><code>P5.5</code> Register migrated episodes with content identity, preserved timestamps, <code>completeness: unknown</code>, and explicit attribution quality.</li>
+<li class="complete"><code>P5.6</code> Convert legacy URLs, exact quotes, and retrieval timestamps into unadjudicated <code>quote_only_legacy</code> evidence without carrying verdicts or load-bearing flags.</li>
+<li class="complete"><code>P5.7</code> Write an integrity manifest covering stable-ID mappings, raw hashes, retrieval provenance, evidence origins, counts, status, every action, and its own digest.</li>
+<li class="complete"><code>P5.8</code> Reject incomplete runs, duplicate legacy IDs, duplicate targets, altered files, unmanifested v2 state, unexpected derived state, missing prior outputs, and manifest-integrity failures before destructive work.</li>
+<li class="complete"><code>P5.9</code> Make canonical writes atomic, verify every byte before deletion, publish a partial manifest before cleanup, and resume safely after pre-manifest, manifest-write, or deletion interruptions.</li>
+<li class="complete"><code>P5.10</code> Delete only recognized v1 derived payloads, technical snapshots, generated reports, source scores, and call ledgers after canonical verification.</li>
+<li class="complete"><code>P5.11</code> Implement dry-run and applied fresh-start operations that remove only research cases, candidates, and owned reports while preserving raw evidence and canonical registries.</li>
+<li class="complete"><code>P5.12</code> Apply migration to the live repository, repeat it, compare tree and raw-file hashes, validate every record, and prove candidate output and fresh-start removals are empty.</li>
+</ul></div></div>
+<div class="phase" id="phase-6"><div class="phase-head"><h3>P6 · Verification, review, and handoff</h3><span class="status done">Completed</span></div><div class="phase-body"><ul class="tasks">
+<li class="complete"><code>P6.1</code> Run strict typecheck continuously after each model, checker, router, renderer, CLI, and migration integration.</li>
+<li class="complete"><code>P6.2</code> Run focused tests during development and the complete suite after the final behavioral change.</li>
+<li class="complete"><code>P6.3</code> Scan authored Python for <code>Any</code>, unknown types, type ignores, unnecessary comments, and docstrings.</li>
+<li class="complete"><code>P6.4</code> Run whitespace and diff-hygiene checks, documenting the narrow byte-preserved raw-file exception rather than normalizing evidence.</li>
+<li class="complete"><code>P6.5</code> Rerun live migration dry-run/apply, raw hash comparisons, records-tree digest, record validation, candidate listing, monitoring, and fresh-start proofs.</li>
+<li class="complete"><code>P6.6</code> Build and install the wheel in isolation, verify the packaged template, and smoke-test the installed CLI.</li>
+<li class="complete"><code>P6.7</code> Audit README, skill instructions, contracts, mode references, migration policy, and monitoring semantics for contradictions or stale v1 concepts.</li>
+<li class="complete"><code>P6.8</code> Run independent Standards and Spec reviews against the fixed base in parallel and convert every correctness finding into a regression test before fixing it.</li>
+<li class="complete"><code>P6.9</code> Resolve review findings around registry identity, terminal ordering, candidate scope, exposed instruction text, persisted temporal invariants, report ownership, and interrupted migration.</li>
+<li class="complete"><code>P6.10</code> Record tests, typecheck, hashes, package proof, review outcomes, and conservative deviations in <code>implementation-notes.html</code>.</li>
+<li class="complete"><code>P6.11</code> Confirm unrelated workspace files remain untouched, mark every phase complete, stage only in-scope files, commit the cutover, and provide the handoff.</li>
+</ul></div></div>
 </section>
 
 <section id="tests"><div class="eyebrow">07 — Proof</div><h2>Acceptance matrix</h2>
