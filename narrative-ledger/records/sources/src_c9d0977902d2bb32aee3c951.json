@@ -9,11 +9,19 @@
   "domains": [
     "lynalden.com"
   ],
-  "declared_scopes": [],
-  "qualification_status": "probationary",
-  "qualification_evidence_ids": [],
-  "assessor": null,
-  "assessment_method": "v1_migration",
-  "assessed_at": null,
-  "review_due_at": null
+  "declared_scopes": [
+    "us-fiscal-monetary-plumbing-and-macro-liquidity",
+    "bitcoin-monetary-economics-and-network-adoption",
+    "long-horizon-asset-class-and-sector-regimes"
+  ],
+  "qualification_status": "qualified",
+  "qualification_evidence_ids": [
+    "ev_bdb2b8145fe54981bc800393",
+    "ev_dc949e3eea14a14059eb69d6",
+    "ev_1fce90c9864513c7d51a2609"
+  ],
+  "assessor": "workspace owner",
+  "assessment_method": "explicit user approval after manual identity, process, archive, and conflict audit; paid-research revenue disclosure accepted",
+  "assessed_at": "2026-07-23T16:00:22Z",
+  "review_due_at": "2026-10-21T16:00:22Z"
 }

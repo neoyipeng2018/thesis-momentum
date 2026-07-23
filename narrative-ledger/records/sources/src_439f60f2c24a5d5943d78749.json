@@ -9,11 +9,19 @@
   "domains": [
     "citriniresearch.com"
   ],
-  "declared_scopes": [],
+  "declared_scopes": [
+    "theme-first-public-equity-research",
+    "global-macro-and-cross-asset-regime-research"
+  ],
   "qualification_status": "probationary",
-  "qualification_evidence_ids": [],
+  "qualification_evidence_ids": [
+    "ev_06ee9e5a6b5918c8b19a3a00",
+    "ev_16f820e71dde974bee8521a2",
+    "ev_161792c21cf7e6d1a40381dd",
+    "ev_3f7e91a6cb150bbd598e6be7"
+  ],
   "assessor": null,
-  "assessment_method": "v1_migration",
+  "assessment_method": "manual archive and conflict audit pending user approval",
   "assessed_at": null,
   "review_due_at": null
 }

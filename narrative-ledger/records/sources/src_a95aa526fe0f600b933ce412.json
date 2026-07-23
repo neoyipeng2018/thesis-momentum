@@ -1,0 +1,26 @@
+{
+  "schema_version": "2.0",
+  "source_id": "src_a95aa526fe0f600b933ce412",
+  "name": "Hunterbrook Media",
+  "venue": "https://hntrbrk.com/",
+  "feeds": [
+    "https://newsletter.hntrbrk.com/"
+  ],
+  "domains": [
+    "hntrbrk.com",
+    "newsletter.hntrbrk.com"
+  ],
+  "declared_scopes": [
+    "us-listed-company-investigations"
+  ],
+  "qualification_status": "probationary",
+  "qualification_evidence_ids": [
+    "ev_f38f153744143ffb5adb22a8",
+    "ev_eac3dfcfb823cdc94caaf445",
+    "ev_e70c448ba60e50a3876733fe"
+  ],
+  "assessor": null,
+  "assessment_method": "manual archive and conflict audit pending user approval",
+  "assessed_at": null,
+  "review_due_at": null
+}
