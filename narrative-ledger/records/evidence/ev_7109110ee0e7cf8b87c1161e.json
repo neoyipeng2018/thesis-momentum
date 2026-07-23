@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_7109110ee0e7cf8b87c1161e",
+  "url": "https://www.sec.gov/Archives/edgar/data/1628369/000162836926000005/cwk-ex991q42025.htm",
+  "quote": "Adjusted diluted earnings per share of $1.22 was up $0.31 or 34% from 2024.",
+  "retrieved_at": "2026-07-23T00:57:14Z",
+  "published_at": "2026-02-19T00:00:00Z",
+  "content_sha256": "e38d7b4ee70a76165152e32601b852063cce66479737476712446f859ac2be2d",
+  "capture_kind": "primary"
+}

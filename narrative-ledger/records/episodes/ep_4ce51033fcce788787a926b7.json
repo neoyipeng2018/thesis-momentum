@@ -1,0 +1,15 @@
+{
+  "schema_version": "2.0",
+  "episode_id": "ep_4ce51033fcce788787a926b7",
+  "source_id": "src_ddee0a176780cb4ede46b9db",
+  "artifact_url": "https://www.baroncapitalgroup.com/article/quarterly-letter-baron-real-estate-fund-q2-2026",
+  "title": "Baron Real Estate Fund | Q2 2026",
+  "published_at": "2026-06-30T00:00:00Z",
+  "retrieved_at": "2026-07-23T00:09:12Z",
+  "content_sha256": "aaeafa814502feb26510ccff789412421c85cf503624cc355b8c584ad411237f",
+  "completeness": "full",
+  "attribution_quality": "direct",
+  "supplement_evidence_ids": [
+    "ev_2817b465e0b5ff0b8227abf9"
+  ]
+}

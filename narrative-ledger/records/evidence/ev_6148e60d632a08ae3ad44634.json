@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_6148e60d632a08ae3ad44634",
+  "url": "https://www.sec.gov/Archives/edgar/data/1628369/000162836926000058/cwk-ex991q12026.htm",
+  "quote": "As of March 31, 2026, the company had outstanding term loans of $1.7 billion, senior secured notes totaling $1.0 billion and cash and cash equivalents of $0.6 billion, resulting in net debt of $2.1 billion.",
+  "retrieved_at": "2026-07-23T00:57:14Z",
+  "published_at": "2026-05-07T00:00:00Z",
+  "content_sha256": "4fec751a5d867e592699c37706305e5ba3eeb022dd52695bc9d118ef8b1f9653",
+  "capture_kind": "primary"
+}

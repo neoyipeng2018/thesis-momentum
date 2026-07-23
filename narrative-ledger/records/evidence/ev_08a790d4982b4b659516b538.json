@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_08a790d4982b4b659516b538",
+  "url": "https://query1.finance.yahoo.com/v8/finance/chart/CWK?period1=1784678400&period2=1784851200&interval=1d&events=history",
+  "quote": "\"fullExchangeName\":\"NYSE\",\"instrumentType\":\"EQUITY\",\"firstTradeDate\":1533216600,\"regularMarketTime\":1784750402,\"hasPrePostMarketData\":true,\"gmtoffset\":-14400,\"timezone\":\"EDT\",\"exchangeTimezoneName\":\"America/New_York\",\"regularMarketPrice\":12.49",
+  "retrieved_at": "2026-07-23T00:57:14Z",
+  "published_at": "2026-07-22T20:00:02Z",
+  "content_sha256": "ac07a52f6f92afee39ec1fd8abd9a268c0046a72c09dae4e10c39795285d4535",
+  "capture_kind": "secondary"
+}

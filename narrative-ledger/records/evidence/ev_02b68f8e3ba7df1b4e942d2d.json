@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_02b68f8e3ba7df1b4e942d2d",
+  "url": "https://www.sec.gov/Archives/edgar/data/1628369/000162836926000058/cwk-ex991q12026.htm",
+  "quote": "Net loss was $12.6 million for the first quarter of 2026 compared to net income of $1.9 million for the first quarter of 2025, a decline of $14.5 million. Diluted loss per share was $0.05 for the first quarter of 2026, down $0.06, compared to diluted earnings per share of $0.01 for the first quarter of 2025. Adjusted EBITDA of $111.3 million increased $15.1 million or 16% (15% in local currency) from the first quarter of 2025. Adjusted diluted earnings per share of $0.15 was up $0.06 or 67% from the first quarter of 2025.",
+  "retrieved_at": "2026-07-23T00:57:14Z",
+  "published_at": "2026-05-07T00:00:00Z",
+  "content_sha256": "4fec751a5d867e592699c37706305e5ba3eeb022dd52695bc9d118ef8b1f9653",
+  "capture_kind": "primary"
+}

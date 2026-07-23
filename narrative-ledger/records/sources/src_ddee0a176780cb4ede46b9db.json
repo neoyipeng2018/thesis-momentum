@@ -1,0 +1,27 @@
+{
+  "schema_version": "2.0",
+  "source_id": "src_ddee0a176780cb4ede46b9db",
+  "name": "Jeff Kolitch / Baron Real Estate Fund Quarterly Letters",
+  "venue": "https://www.baroncapitalgroup.com/product-detail/baron-real-estate-fund-breix",
+  "feeds": [
+    "https://www.baroncapitalgroup.com/insights-webcasts"
+  ],
+  "domains": [
+    "baroncapitalgroup.com"
+  ],
+  "declared_scopes": [
+    "us-listed-real-estate-and-real-estate-related-equities-fundamental-research"
+  ],
+  "qualification_status": "qualified",
+  "qualification_evidence_ids": [
+    "ev_32229b53256e6cef346382cd",
+    "ev_633bcb2f7ddd48102ba5b593",
+    "ev_852d352f7e635f061a7a419a",
+    "ev_7b17a9f4961607481d887704",
+    "ev_2817b465e0b5ff0b8227abf9"
+  ],
+  "assessor": "workspace owner",
+  "assessment_method": "explicit user approval after manual identity, process, archive, and conflict audit; disclosed fund-holding and fee conflicts accepted",
+  "assessed_at": "2026-07-23T00:22:45Z",
+  "review_due_at": "2026-10-21T00:22:45Z"
+}

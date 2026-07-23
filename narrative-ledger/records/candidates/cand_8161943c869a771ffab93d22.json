@@ -1,0 +1,195 @@
+{
+  "schema_version": "2.0",
+  "candidate_id": "cand_8161943c869a771ffab93d22",
+  "case_id": "case_19cca3d991bbfd7b4aa61374",
+  "source_id": "src_ddee0a176780cb4ede46b9db",
+  "scope": "us-listed-real-estate-and-real-estate-related-equities-fundamental-research",
+  "episode_id": "ep_4ce51033fcce788787a926b7",
+  "disposition": "validated_trade_candidate",
+  "check_digest": "d351712b0182d580b882e8ac6de6a1858921ef9cd7fc8b38e1b6838e1b9e3ff9",
+  "checker_version": "2.0.0",
+  "published_at": "2026-07-23T01:02:37Z",
+  "valid_until": "2026-08-05T10:55:00Z",
+  "thesis": "CWK is a bounded long research candidate through its August 5 second-quarter release. The $12.49 July 22 close implies about 7.1 to 7.7 times a management-derived 2027 adjusted-EPS range, below Kolitch's stated 8 times, while first-quarter transaction growth supports an early commercial-real-estate recovery. The event can test whether the low multiple reflects temporary AI and cyclical fear or deteriorating earnings quality.",
+  "expectations_gap": "The gap is not the existence of 15% to 20% adjusted-EPS growth; the company's published framework already states that ambition. It is whether that growth, cash conversion, and deleveraging remain credible enough for valuation to move from about 7.1 to 7.7 times toward an assumed 10 times. Applying 10 times to the management-derived $1.61 to $1.76 range gives $16.13 to $17.57, about 29% to 41% above the $12.49 close, without assuming full peer convergence.",
+  "downside": "The service business has no hard asset-value floor, and $2.1 billion of net debt amplifies cyclicality. The gap between a first-quarter GAAP loss and positive adjusted earnings also makes the low multiple less protective than it appears. Applying an assumed 6 times to the low-end $1.61 estimate gives $9.68, about 22% below the $12.49 close; an earnings reset below that range would make the outcome worse.",
+  "assertions": [
+    {
+      "assertion_id": "kolitch_cwk_valuation",
+      "statement": "Kolitch values CWK at about 8 times estimated 2027 earnings and calls the multiple highly discounted.",
+      "provenance": "stated",
+      "source_quote": "Cushman & Wakefield is valued at only 8 times 2027 estimated earnings, a highly discounted valuation multiple, in our opinion.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_d86593bd79e44d29da07358d"
+      ],
+      "load_bearing": false
+    },
+    {
+      "assertion_id": "source_economic_interest",
+      "statement": "Baron Real Estate Fund reported CWK at 1.1% of net assets on July 2, 2026.",
+      "provenance": "stated",
+      "source_quote": "Cushman & Wakefield Ltd. 1.1% Real Estate",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_f6bb37cf68026da557918174"
+      ],
+      "load_bearing": false
+    },
+    {
+      "assertion_id": "reproduced_2027_multiple",
+      "statement": "Compounding 2025 adjusted EPS of $1.22 by management's 15% to 20% annual framework produces a 2027 range of about $1.61 to $1.76; the $12.49 close therefore implies about 7.1 to 7.7 times that range.",
+      "provenance": "inferred",
+      "source_quote": null,
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_6c4832d146694bcd9bd2df4a",
+        "ev_7109110ee0e7cf8b87c1161e",
+        "ev_08a790d4982b4b659516b538"
+      ],
+      "load_bearing": true
+    },
+    {
+      "assertion_id": "q1_transaction_recovery",
+      "statement": "First-quarter revenue grew 11%, with Leasing up 19% and Capital markets up 15%, supporting an early transaction recovery.",
+      "provenance": "stated",
+      "source_quote": "Revenue of $2.5 billion for the first quarter of 2026 increased 11% (9% in local currency) from the first quarter of 2025. Services revenue increased 9% (7% in local currency), reflecting sustained momentum across all segments, led by higher facilities management and project management revenue. Leasing revenue increased 19% (17% in local currency), driven primarily by growth in the Americas across all deal sizes, with continued strength in office and industrial leasing, including data centers. Capital markets revenue increased 15% (14% in local currency), marking our sixth consecutive quarter of double-digit growth. Americas Capital markets, up 22% (22% in local currency), saw solid performance in the office sector. Valuation and other revenue increased 9% (4% in local currency).",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_7c058ab1314055cd804d6ad4"
+      ],
+      "load_bearing": true
+    },
+    {
+      "assertion_id": "adjusted_gaap_gap",
+      "statement": "First-quarter adjusted EBITDA rose 16% and adjusted EPS rose 67%, but the company still reported a $12.6 million GAAP net loss.",
+      "provenance": "stated",
+      "source_quote": "Net loss was $12.6 million for the first quarter of 2026 compared to net income of $1.9 million for the first quarter of 2025, a decline of $14.5 million. Diluted loss per share was $0.05 for the first quarter of 2026, down $0.06, compared to diluted earnings per share of $0.01 for the first quarter of 2025. Adjusted EBITDA of $111.3 million increased $15.1 million or 16% (15% in local currency) from the first quarter of 2025. Adjusted diluted earnings per share of $0.15 was up $0.06 or 67% from the first quarter of 2025.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_02b68f8e3ba7df1b4e942d2d"
+      ],
+      "load_bearing": true
+    },
+    {
+      "assertion_id": "q1_net_debt",
+      "statement": "CWK reported $2.1 billion of net debt at March 31, 2026.",
+      "provenance": "stated",
+      "source_quote": "As of March 31, 2026, the company had outstanding term loans of $1.7 billion, senior secured notes totaling $1.0 billion and cash and cash equivalents of $0.6 billion, resulting in net debt of $2.1 billion.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_6148e60d632a08ae3ad44634"
+      ],
+      "load_bearing": true
+    },
+    {
+      "assertion_id": "ai_disintermediation_risk",
+      "statement": "CWK's annual report says AI could let clients replicate elements of its services and reduce demand.",
+      "provenance": "stated",
+      "source_quote": "The adoption of AI Technologies within the real estate industry has introduced, and will likely continue to introduce, increased risk of disintermediation, as AI Technologies can provide direct access to information or capabilities that previously required professionals. If AI Technologies enable our clients or partners to replicate elements of our service offerings independently, the demand for our services could decline.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_58d3cc5858a8a9fd1667562b"
+      ],
+      "load_bearing": true
+    }
+  ],
+  "countercase": "The market may be rationally discounting a levered, cyclical, non-GAAP earnings stream. The first quarter produced a $12.6 million GAAP loss while adjusted EPS rose; net debt was $2.1 billion; and CWK's own annual report says AI can let clients replicate services. The source also held 1.1% of fund assets in CWK, so it is economically interested. A merely in-line second quarter may leave the multiple unchanged.",
+  "expression": {
+    "instrument": "Cushman & Wakefield Ltd. common shares (NYSE: CWK)",
+    "direction": "long",
+    "horizon": {
+      "kind": "event",
+      "event": "second-quarter 2026 results and conference call, followed by fresh underwriting",
+      "by_date": "2026-08-05"
+    },
+    "origin": "researcher",
+    "instrument_provenance": "stated",
+    "direction_provenance": "inferred",
+    "horizon_provenance": "inferred",
+    "rationale": "The current multiple validates the source's discount claim using issuer targets and market data, while the August 5 event supplies a short falsification window. Direction is inferred from the source's optimism; the event horizon is researcher-selected.",
+    "source_quote": null
+  },
+  "catalyst": {
+    "description": "Second-quarter 2026 results at approximately 7:00 a.m. ET and the management call at 9:00 a.m. ET on August 5.",
+    "by_date": "2026-08-05",
+    "provenance": "stated",
+    "evidence_ids": [
+      "ev_fa02a4608a0909d401150151"
+    ]
+  },
+  "invalidators": [
+    {
+      "description": "The 2026 adjusted-EPS growth framework falls below its published lower bound or is withdrawn.",
+      "metric": "fiscal-2026 adjusted-EPS growth outlook",
+      "operator": "lt",
+      "target_value": "15% year over year",
+      "review_at": "2026-08-05T14:30:00Z",
+      "evidence_ids": [
+        "ev_6c4832d146694bcd9bd2df4a",
+        "ev_fa02a4608a0909d401150151"
+      ]
+    },
+    {
+      "description": "Transaction activity reverses rather than extending the first-quarter recovery.",
+      "metric": "combined Leasing and Capital markets revenue growth",
+      "operator": "lte",
+      "target_value": "0% year over year",
+      "review_at": "2026-08-05T14:30:00Z",
+      "evidence_ids": [
+        "ev_7c058ab1314055cd804d6ad4",
+        "ev_fa02a4608a0909d401150151"
+      ]
+    },
+    {
+      "description": "Cash conversion falls below management's published framework.",
+      "metric": "trailing free-cash-flow conversion",
+      "operator": "lt",
+      "target_value": "60%",
+      "review_at": "2026-08-05T14:30:00Z",
+      "evidence_ids": [
+        "ev_6c4832d146694bcd9bd2df4a",
+        "ev_fa02a4608a0909d401150151"
+      ]
+    },
+    {
+      "description": "Balance-sheet risk worsens from the first-quarter baseline.",
+      "metric": "quarter-end net debt",
+      "operator": "gt",
+      "target_value": "$2.2 billion",
+      "review_at": "2026-08-05T14:30:00Z",
+      "evidence_ids": [
+        "ev_6148e60d632a08ae3ad44634",
+        "ev_fa02a4608a0909d401150151"
+      ]
+    },
+    {
+      "description": "Company disclosure identifies actual AI-linked client insourcing, fee compression, or contract losses.",
+      "metric": "material adverse AI-disintermediation evidence",
+      "operator": "published",
+      "target_value": "issuer disclosure",
+      "review_at": "2026-08-05T14:30:00Z",
+      "evidence_ids": [
+        "ev_58d3cc5858a8a9fd1667562b",
+        "ev_fa02a4608a0909d401150151"
+      ]
+    }
+  ],
+  "evidence_ids": [
+    "ev_02b68f8e3ba7df1b4e942d2d",
+    "ev_08a790d4982b4b659516b538",
+    "ev_2817b465e0b5ff0b8227abf9",
+    "ev_32229b53256e6cef346382cd",
+    "ev_58d3cc5858a8a9fd1667562b",
+    "ev_6148e60d632a08ae3ad44634",
+    "ev_633bcb2f7ddd48102ba5b593",
+    "ev_6c4832d146694bcd9bd2df4a",
+    "ev_7109110ee0e7cf8b87c1161e",
+    "ev_7b17a9f4961607481d887704",
+    "ev_7c058ab1314055cd804d6ad4",
+    "ev_852d352f7e635f061a7a419a",
+    "ev_d86593bd79e44d29da07358d",
+    "ev_f6bb37cf68026da557918174",
+    "ev_fa02a4608a0909d401150151"
+  ]
+}

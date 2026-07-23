@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_58d3cc5858a8a9fd1667562b",
+  "url": "https://www.sec.gov/Archives/edgar/data/1628369/000162836926000008/cwk-20251231.htm",
+  "quote": "The adoption of AI Technologies within the real estate industry has introduced, and will likely continue to introduce, increased risk of disintermediation, as AI Technologies can provide direct access to information or capabilities that previously required professionals. If AI Technologies enable our clients or partners to replicate elements of our service offerings independently, the demand for our services could decline.",
+  "retrieved_at": "2026-07-23T00:57:14Z",
+  "published_at": "2026-02-19T00:00:00Z",
+  "content_sha256": "b3b23e20ed731c87353a1cd97039bd927a1e5de81a3ccf8b9f3baf9142e4b89f",
+  "capture_kind": "primary"
+}
