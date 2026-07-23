@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_2b182cd44ff785ea521fb174",
+  "url": "https://home.treasury.gov/news/press-releases/sb0489",
+  "quote": "The U.S. Department of the Treasury is offering $125 billion of Treasury securities to refund approximately $83.3 billion of privately-held Treasury notes maturing on May 15, 2026. This issuance will raise new cash from private investors of approximately $41.7 billion.",
+  "retrieved_at": "2026-07-23T16:05:54Z",
+  "published_at": "2026-05-06T00:00:00Z",
+  "content_sha256": "1731115b84eee825499cb7017077956fe159c0f64fdf46b76aaea5023a917f6a",
+  "capture_kind": "primary"
+}

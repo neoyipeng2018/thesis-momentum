@@ -1,0 +1,9 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_81b298705686fb8023cbf0e8",
+  "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_yield_curve&field_tdr_date_value=2026&page&_format=csv",
+  "quote": "07/22/2026,3.76,3.82,3.82,3.89,4.00,4.05,4.11,4.31,4.34,4.41,4.53,4.67,5.17,5.15",
+  "retrieved_at": "2026-07-23T16:05:57Z",
+  "content_sha256": "04e58864ee1c9f59fd6ff400f33a122c1642f4315597f5dc3b5691b199374060",
+  "capture_kind": "primary"
+}

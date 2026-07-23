@@ -1,0 +1,200 @@
+{
+  "schema_version": "2.0",
+  "candidate_id": "cand_a09ff47525e7b1ad09b0763f",
+  "case_id": "case_a772c0ff6e60c6c0effe302e",
+  "source_id": "src_c9d0977902d2bb32aee3c951",
+  "scope": "us-fiscal-monetary-plumbing-and-macro-liquidity",
+  "episode_id": "ep_81e8d36d53e3bc31d1844751",
+  "disposition": "validated_trade_candidate",
+  "check_digest": "bda2a5cc3d785bbc3c9e3c632767abeb70e86ea6906802b41d8f9d539f25c630",
+  "checker_version": "2.0.0",
+  "published_at": "2026-07-23T16:14:32Z",
+  "valid_until": "2026-08-05T12:00:00Z",
+  "thesis": "TLT, the iShares 20+ Year Treasury Bond ETF, is a bounded short research candidate into Treasury's August 5 quarterly refunding statement. The source's June 4 issue restates a fiscal-dominance regime in which long-duration government claims are the structurally weak asset while deficits, in her words, continue to run hot for the foreseeable future. Independent primary data agree with the regime description: the fiscal 2026 deficit reached $1.37 trillion through June, the 30-year par yield has risen from 4.97% on the newsletter's publication date to 5.15% on July 22, and TLT has fallen to $83.44. The August 5 statement tests whether May's steady-coupon guidance survives that deficit run-rate.",
+  "expectations_gap": "The market's stated base case, per Treasury's May guidance and dealer commentary, is unchanged note and bond auction sizes into early 2027; the long end is nonetheless repricing, with the 30-year par yield up 18 basis points since the newsletter's June 4 publication (4.97% to 5.15%) and TLT down from $84.52 on July 17 to $83.44 on July 22. The gap the August 5 statement can close is between guidance calibrated in May and a deficit that ran $1.367 trillion through nine months of fiscal 2026 — ahead of the $1.337 trillion fiscal-2025 pace computed from the month rows of the same retrieved table, a year that ended at $1.775 trillion. Any softening of the next-several-quarters maintenance language, or larger borrowing needs in the August 3 financing estimates, extends the July repricing; the researcher, not the source, supplies this event mapping.",
+  "downside": "The near-term risk to a short expression is a reaffirmation: if the August 5 statement repeats steady coupon sizes with the maintenance language intact and the August 3 financing estimates hold no surprise, the July long-end selloff can retrace. A return of the 30-year yield to its early-July 4.97% area would put TLT back toward its mid-July $84.52 print, roughly 1.3% against the $83.44 reference, and a genuine risk-off shock would move duration far more against the candidate, since long Treasuries rally hard in flights to quality regardless of supply. May's steady guidance arrived in line with market expectations, so the modal outcome already leans against this candidate.",
+  "assertions": [
+    {
+      "assertion_id": "source_regime_weak_bonds",
+      "statement": "The source classifies currency and bonds as inherently weak assets because of major supply growth, tolerable mainly as short-term instruments rather than duration.",
+      "provenance": "stated",
+      "source_quote": "On the other hand, major supply growth (like currency and bonds) make for inherently weak assets (let’s call them group B) that are risky over the long run to have too much exposure to, but can occasionally make for a good trade.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_97c285a4e4146559ab3aa374"
+      ],
+      "load_bearing": false
+    },
+    {
+      "assertion_id": "source_avoid_long_duration",
+      "statement": "The source's summary guidance includes avoiding excessive dependence on long-duration fiat claims.",
+      "provenance": "stated",
+      "source_quote": "Avoid excessive dependence on long-duration fiat claims.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_87ce1a947af4cb58a417ac36"
+      ],
+      "load_bearing": false
+    },
+    {
+      "assertion_id": "source_deficits_run_hot",
+      "statement": "The source, re-quoting her March 2026 issue inside the June letter, expects US fiscal deficits to keep running hot for the foreseeable future.",
+      "provenance": "stated",
+      "source_quote": "What all of this points to is that US fiscal deficits will continue to run hot for the foreseeable future. Nothing stops this train, and a handful of things, such as major war, can potentially accelerate it.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_986dafdb71a41f49ddda8239"
+      ],
+      "load_bearing": false
+    },
+    {
+      "assertion_id": "source_three_pillar_frame",
+      "statement": "The source's standing allocation frame is a three-pillar structure of profitable equities, commodities-producers and hard monies, and cash-equivalents, with long-duration bonds de-emphasized.",
+      "provenance": "stated",
+      "source_quote": "For me, the three main pillars consist of 1) profitable equities 2) commodities/producers and hard monies and 3) cash-equivalents.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_38b6310b81c711b350e5e022"
+      ],
+      "load_bearing": false
+    },
+    {
+      "assertion_id": "reproduced_fiscal_run_rate",
+      "statement": "Treasury's June 2026 Monthly Treasury Statement shows a fiscal-year-to-date deficit of $1.367 trillion through nine months of fiscal 2026, and the same table records a $1.775 trillion total deficit for fiscal 2025.",
+      "provenance": "inferred",
+      "source_quote": null,
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_bf17b113be32d39451f7996c",
+        "ev_2176d14595b4420fa8e95a54"
+      ],
+      "load_bearing": true
+    },
+    {
+      "assertion_id": "reproduced_long_end_repricing",
+      "statement": "Treasury's daily par yield curve shows the 30-year yield at 5.15% on July 22, 2026, up from 4.97% on June 4 when the newsletter published, while TLT's Yahoo Finance daily series shows a July 22 close of $83.44, down from $84.52 on July 17.",
+      "provenance": "inferred",
+      "source_quote": null,
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_81b298705686fb8023cbf0e8",
+        "ev_db64740099585d7bf329a5f7",
+        "ev_7beb2c72343bef0f5da0b4bb"
+      ],
+      "load_bearing": true
+    },
+    {
+      "assertion_id": "treasury_steady_guidance",
+      "statement": "Treasury's May 6, 2026 refunding statement offered $125 billion of securities and guided to keeping coupon and FRN auction sizes steady for at least the next several quarters.",
+      "provenance": "stated",
+      "source_quote": "Based on current projected borrowing needs, Treasury anticipates maintaining nominal coupon and FRN auction sizes for at least the next several quarters.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_2b182cd44ff785ea521fb174",
+        "ev_4c899ecc5c0447c435a41041"
+      ],
+      "load_bearing": true
+    },
+    {
+      "assertion_id": "dealer_consensus_no_change",
+      "statement": "Reuters reported dealers expect no change in note and bond auction sizes until early 2027, in line with the May guidance.",
+      "provenance": "stated",
+      "source_quote": "In a statement, the Treasury said it will keep its coupon and floating rate note auction sizes steady for at least the \"next several quarters\".",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_39f816cc9cac9848543f123f"
+      ],
+      "load_bearing": false
+    },
+    {
+      "assertion_id": "source_economic_interest",
+      "statement": "The source discloses that she is a general partner at a bitcoin-focused venture firm, an economic interest aligned with hard-money conclusions.",
+      "provenance": "stated",
+      "source_quote": "Those who have read my work for a few years know that I’m a general partner at Ego Death Capital , a bitcoin-focused venture firm that has led seed-stage and Series A venture deals across the bitcoin ecosystem since 2022.",
+      "verdict": "supports",
+      "evidence_ids": [
+        "ev_384285b1e4b3c2f13759fddf"
+      ],
+      "load_bearing": false
+    }
+  ],
+  "countercase": "The strongest countercase is that none of this is new information: fiscal deterioration is among the most widely told macro stories of 2026, Treasury guided to steady coupon sizes only eleven weeks ago in line with dealer expectations, and the 18 basis-point July move may already price the refunding risk, leaving an event whose modal outcome is unchanged guidance and negative carry in the interim. The source is also not expressing this trade herself: the newsletter counsels limiting long-duration fiat claims inside a diversified three-pillar allocation rather than betting against bonds, so the directional expression is the researcher's construction. Her economic interests also lean toward hard-money conclusions — she is a general partner at a bitcoin-focused venture firm whose team is launching a bitcoin-treasury vehicle — a disclosed but real bias.",
+  "expression": {
+    "instrument": "iShares 20+ Year Treasury Bond ETF (NASDAQ: TLT)",
+    "direction": "short",
+    "horizon": {
+      "kind": "event",
+      "event": "August 2026 quarterly refunding statement and financing estimates, followed by fresh underwriting",
+      "by_date": "2026-08-05"
+    },
+    "origin": "researcher",
+    "instrument_provenance": "inferred",
+    "direction_provenance": "inferred",
+    "horizon_provenance": "inferred",
+    "rationale": "The source names the asset class — long-duration fiat claims — but no instrument, direction, or event. TLT is the standard exchange-traded proxy for 20-plus-year Treasuries; the short direction converts her avoidance stance into a falsifiable claim; the August 5 refunding statement is the researcher-selected test window. She frames bond exposure as something to limit within an allocation, not as a directional view.",
+    "source_quote": null
+  },
+  "catalyst": {
+    "description": "Treasury's August 2026 quarterly refunding policy statement is scheduled for release in the 8:30 a.m. documents block on August 5, 2026, with marketable borrowing estimates due August 3, per Treasury's refunding-documents page.",
+    "by_date": "2026-08-05",
+    "provenance": "stated",
+    "evidence_ids": [
+      "ev_f3edd5098f6aa4849761f318",
+      "ev_a123cda826ce22d93d74070c"
+    ]
+  },
+  "invalidators": [
+    {
+      "description": "Treasury's August 5 statement retains unchanged nominal coupon auction sizes and the next-several-quarters maintenance language.",
+      "metric": "August 2026 refunding coupon-size guidance",
+      "operator": "published",
+      "target_value": "steady sizes with maintenance language retained",
+      "review_at": "2026-08-05T13:30:00Z",
+      "evidence_ids": [
+        "ev_4c899ecc5c0447c435a41041",
+        "ev_f3edd5098f6aa4849761f318"
+      ]
+    },
+    {
+      "description": "The 30-year par yield closes below its early-July level, unwinding the repricing that currently supports the thesis.",
+      "metric": "30-year Treasury par yield, daily close",
+      "operator": "lt",
+      "target_value": "4.97%",
+      "review_at": "2026-08-05T13:30:00Z",
+      "evidence_ids": [
+        "ev_81b298705686fb8023cbf0e8",
+        "ev_db64740099585d7bf329a5f7"
+      ]
+    },
+    {
+      "description": "TLT closes above its mid-July high, indicating the market is rejecting the supply-pressure narrative before the event.",
+      "metric": "TLT daily close",
+      "operator": "gt",
+      "target_value": "$85.00",
+      "review_at": "2026-08-05T13:30:00Z",
+      "evidence_ids": [
+        "ev_7beb2c72343bef0f5da0b4bb"
+      ]
+    }
+  ],
+  "evidence_ids": [
+    "ev_1fce90c9864513c7d51a2609",
+    "ev_2176d14595b4420fa8e95a54",
+    "ev_2b182cd44ff785ea521fb174",
+    "ev_384285b1e4b3c2f13759fddf",
+    "ev_38b6310b81c711b350e5e022",
+    "ev_39f816cc9cac9848543f123f",
+    "ev_4c899ecc5c0447c435a41041",
+    "ev_7beb2c72343bef0f5da0b4bb",
+    "ev_81b298705686fb8023cbf0e8",
+    "ev_87ce1a947af4cb58a417ac36",
+    "ev_97c285a4e4146559ab3aa374",
+    "ev_986dafdb71a41f49ddda8239",
+    "ev_a123cda826ce22d93d74070c",
+    "ev_bdb2b8145fe54981bc800393",
+    "ev_bf17b113be32d39451f7996c",
+    "ev_db64740099585d7bf329a5f7",
+    "ev_dc949e3eea14a14059eb69d6",
+    "ev_f3edd5098f6aa4849761f318"
+  ]
+}

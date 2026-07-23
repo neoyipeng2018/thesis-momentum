@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_39f816cc9cac9848543f123f",
+  "url": "https://r.jina.ai/https://finance.yahoo.com/economy/policy/articles/us-treasury-keeps-auction-sizes-145911745.html",
+  "quote": "In a statement, the Treasury said it will keep its coupon and floating rate note auction sizes steady for at least the \"next several quarters\".",
+  "retrieved_at": "2026-07-23T16:07:40Z",
+  "published_at": "2026-05-06T00:00:00Z",
+  "content_sha256": "66d5f95e126a37326e8b607bc3ba7993c8d10917732b6aa0262dd1446a667127",
+  "capture_kind": "secondary"
+}

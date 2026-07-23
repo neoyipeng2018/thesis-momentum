@@ -1,0 +1,9 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_7beb2c72343bef0f5da0b4bb",
+  "url": "https://query1.finance.yahoo.com/v8/finance/chart/TLT?range=5d&interval=1d",
+  "quote": "\"close\":[84.5199966430664,83.88999938964844,83.66000366210938,83.44000244140625,83.13500213623047]",
+  "retrieved_at": "2026-07-23T16:05:13Z",
+  "content_sha256": "9f16bc2462788c396bc3b5fcdedec5b642253f88996cbab41cde8a15de43e57d",
+  "capture_kind": "secondary"
+}

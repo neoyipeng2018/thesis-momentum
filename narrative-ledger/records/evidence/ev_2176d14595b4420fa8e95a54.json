@@ -1,0 +1,9 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_2176d14595b4420fa8e95a54",
+  "url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_1?filter=record_date:eq:2026-06-30&page%5Bsize%5D=60",
+  "quote": "\"classification_desc\":\"Year-to-Date\",\"current_month_gross_rcpt_amt\":\"5234616472030.91\",\"current_month_gross_outly_amt\":\"7009985661849.26\",\"current_month_dfct_sur_amt\":\"1775369189818.35\"",
+  "retrieved_at": "2026-07-23T16:06:02Z",
+  "content_sha256": "65ce5a6468397ec588ed1e0fc0ebbbfbea6296db1d15e99b7c4cf141fdbc1cc0",
+  "capture_kind": "primary"
+}

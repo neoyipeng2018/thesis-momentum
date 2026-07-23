@@ -1,0 +1,10 @@
+{
+  "schema_version": "2.0",
+  "evidence_id": "ev_4c899ecc5c0447c435a41041",
+  "url": "https://home.treasury.gov/news/press-releases/sb0489",
+  "quote": "Based on current projected borrowing needs, Treasury anticipates maintaining nominal coupon and FRN auction sizes for at least the next several quarters.",
+  "retrieved_at": "2026-07-23T16:05:54Z",
+  "published_at": "2026-05-06T00:00:00Z",
+  "content_sha256": "1731115b84eee825499cb7017077956fe159c0f64fdf46b76aaea5023a917f6a",
+  "capture_kind": "primary"
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "2.0",
+  "episode_id": "ep_81e8d36d53e3bc31d1844751",
+  "source_id": "src_c9d0977902d2bb32aee3c951",
+  "artifact_url": "https://www.lynalden.com/june-2026-newsletter/",
+  "title": "June 2026 Newsletter: The Wild West",
+  "published_at": "2026-06-04T00:00:00Z",
+  "retrieved_at": "2026-07-23T16:01:49Z",
+  "content_sha256": "b87023da28615fae3aabc662f58ae2e67af1f919b985dbd53d47c66726d2dd3f",
+  "completeness": "full",
+  "attribution_quality": "direct",
+  "supplement_evidence_ids": []
+}
